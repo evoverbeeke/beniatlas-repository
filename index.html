@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"> 
+    
+<html lang='en'>    
+    <head>
+        <title>Beni Atlas</title>
+        <link rel="stylesheet" href="stylesheets/ol.css" type="text/css">
+        <link rel="stylesheet" href="stylesheets/leaflet_beniatlas.css">
+        <script type="text/javascript" src="javascript/jquery.min.js"></script>
+        <script type="text/javascript" src="javascript/ol.js"></script>
+
+    </head>
+    
+    <body>
+        <script type="text/javascript" src="javascript/beniatlas.js"></script>
+        
+        
+        <div>
+            <p>
+                <a href="OpenLayers_index2.html">
+                    <img src="images/logo_beniatlas.png" alt="BeniAtlas" style="top:80px; left: 30px; position:absolute">
+                </a>
+            </p>
+            
+            <p>
+                <ul class="nobullet" class="hnav">
+                    <li class="hnav-about"><a class="hnav-menu" href="about.html">[About]</a></li>
+                    <li class="hnav-map"><a class="hnav-menu" href="maps.html">[Maps]</a></li>
+                    <li class="hnav-blog"><a class="hnav-menu" href="blog.html">[Blog]</a></li>
+                    <li class="hnav-partners"><a class="hnav-menu" href="partners.html">[Partners]</a></li>
+                    <li class="hnav-en"><a class="hnav-menu" href="english.html">[EN]</a>/</li>
+                    <li class="hnav-fr"><a class="hnav-menu" href="french.html">[FR]</a></li>
+                    </ul>
+            </p>
+                    
+            <img class="northarrow" src="images/northarrow.png" alt="North Arrow" width="30px">
+                
+        </div>
+        
+        <div id="map" class="map">       
+        
+            <!--LEGEND DIV-->
+            <div class="legend">
+                <p>
+                    <ul>
+                        <li>Schools</li>
+                        <li>Churches</li>
+                    </ul>
+                </p>
+            </div>
+         </div>
+
+        
+<script type="text/javascript">
+  
+//map
+var map = new ol.Map({
+    target: 'map',
+    controls: [
+       new ol.control.Zoom({
+            duration: 250,
+            className: 'ol-zoom',
+            zoomInLabel: '+',
+            zoomOutLabel: '-',
+            })
+    ],
+    interactions: [],
+    layers: [],
+    view: benicity
+    });
+    
+    
+map.addLayer(roadsLayer);
+map.addLayer(roads2Layer);
+map.addLayer(roads_primaryLayer);
+
+        
+var quartiersFeature = new ol.Feature(quartiersLayer);
+    
+var marketsLayer = new ol.layer.Vector({
+    title: 'Markets',
+    source: new ol.source.GeoJSON({
+        url: 'data/markets.json'
+        }),
+    style: new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 4,
+            fill: new ol.style.Fill({
+                color: '#C4CA74',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 0.5
+                })
+            })
+        })
+    });
+
+var featureOverlay = new ol.FeatureOverlay({
+    map: map
+    });
+    
+
+//change to red when click
+var selectInteraction = new ol.interaction.Select({
+    layers: [quartiersLayer],
+    style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3,
+            }),
+        fill: new ol.style.Fill({
+            color: 'rgba(0,0,255,0.1)',
+            })
+        })
+    });
+
+//change to blue when hover
+var selectPointerMove = new ol.interaction.Select({
+    layers: [quartiersLayer],
+    style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'red',
+            width: 3,
+            }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255,0,0,0.1)',
+            })
+        }),
+    condition: ol.events.condition.pointerMove
+    });
+    
+map.addInteraction(selectPointerMove);
+map.addInteraction(selectInteraction);
+
+
+var zoomExtents = function(event) {
+
+    var selectedFeature = selectInteraction.getFeature();
+    return feature;
+
+    var info = feature.get('name');
+    var minx = feature.get('MINX');
+    var miny = feature.get('MINY');
+    var maxx = feature.get('MAXX');
+    var maxy = feature.get('MAXY');
+    
+    var minlon = parseInt($('minx').val());
+    var minlat = parseInt($('miny').val());
+    var maxlon = parseInt($('maxx').val());
+    var maxlat = parseInt($('maxy').val());
+    
+    var extent = [minlon, minlat, maxlon, maxlat];
+    alert (minlon);
+    /*
+    extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+    
+    map.getView().calculateExtent(extent, map.getSize());*/
+    };
+    
+/*
+var displayFeatureInfo = function(event) {
+
+    var selectedFeature = selectInteraction.getFeature();
+    return feature;
+    
+    var info = document.getElementById('info');
+    var minx = document.getElementById('minx');
+    var miny = document.getElementById('miny');
+    var maxx = document.getElementById('maxx');
+    var maxy = document.getElementById('maxy');
+    
+    info.innerHTML = feature.get('name');
+    minx.innerHTML = feature.get('MINX');
+    miny.innerHTML = feature.get('MINY');
+    maxx.innerHTML = feature.get('MAXX');
+    maxy.innerHTML = feature.get('MAXY');
+ 
+    };
+    
+selectInteraction.on('click', function(event) {
+    displayFeatureInfo(event);
+    })
+*/
+function fitMapToExtent(extent){
+    map.getView().fitExtent(extent, map.getSize());
+    };
+/*
+var displayFeatureInfo = function(event) {
+    
+    var hoverFeature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        return feature;
+        });
+        
+    var info = document.getElementById('info');
+    var minx = document.getElementById('minx');
+    var miny = document.getElementById('miny');
+    var maxx = document.getElementById('maxx');
+    var maxy = document.getElementById('maxy');
+        
+
+    };
+
+map.on('pointermove', function(evt) {
+  if (evt.dragging) {
+    return;
+  }
+  var pixel = map.getEventPixel(evt.originalEvent);
+  displayFeatureInfo(pixel);
+});
+
+*/
+
+
+//display extents....
+/*
+
+var displayFeatureInfo2 = function(pixel) {
+
+    var feature = map.forEachFeatureAtPixel(pixel, function(feature, quartiersLayer) {
+        return feature;
+        });
+        
+    var minx = feature.get('MINX');
+    var miny = feature.get('MINY');
+    var maxx = feature.get('MAXX');
+    var maxy = feature.get('MAXY');
+
+    var minlon = parseInt($('minx').val());
+    var minlat = parseInt($('miny').val());
+    var maxlon = parseInt($('maxx').val());
+    var maxlat = parseInt($('maxy').val());
+
+    var extent = [minlon, minlat, maxlon, maxlat];
+
+    map.getView().fitExtent(extent, map.getSize());
+        
+    var info1 = document.getElementById('extent');
+    var info2 = document.getElementById('name');
+    
+    info1.innerHTML = extent;
+
+    if (feature) {
+        info2.innerHTML = feature.get('name');
+        } else {
+        info2.innerHTML = '&nbsp;';
+        }
+    };
+    
+
+    
+$(map.getViewport()).on('mouseclick', function(evt) {
+    var pixel = map.getEventPixel(evt.originalEvent);
+    displayFeatureInfo2(pixel);
+    });
+
+*/
+
+
+
+
+
+    view: new ol.View({
+        projection: 'EPSG:4326',
+        center: [29.46, 0.50],
+        zoom: 13,
+        })
+
+//turn agriculture layer on and off
+ 
+function changeImage_in() {
+    var image = document.getElementById('layer_in');
+    if (image.src.match("layer_in_on.png")) {
+        image.src = "images/layer_in_off.png";
+        map.removeLayer(marketsLayer);
+    } else {
+        image.src = "images/layer_in_on.png";
+        map.addLayer(marketsLayer);
+    }
+}
+    
+
+
+
+
+</script>
+
+        <div>
+            <p>
+                <ul class="nobullet" class="hnav">
+                    <li class="hnav-menu" style="position:absolute; top:220px; left:750px">SELECT AN ACTIVITY</li>
+                    <li class="hnav-menu" style="position:absolute; top:320px; left:750px">SELECT A PLACE</li>
+                    <li class="hnav-menu" style="position:absolute; top:460px; left:750px">SELECT A THEME</li>
+
+
+                </ul>
+            </p></div>
+        <div id="info" class="alert alert-success" style="position:absolute; top:470px; left:760px">&nbsp; </div>
+        <div id="minx" class="alert alert-success" style="position:absolute; top:510px; left:760px">&nbsp; </div>
+        <div id="miny" class="alert alert-success" style="position:absolute; top:520px; left:760px">&nbsp; </div>
+        <div id="maxx" class="alert alert-success" style="position:absolute; top:530px; left:760px">&nbsp; </div>
+        <div id="maxy" class="alert alert-success" style="position:absolute; top:540px; left:760px">&nbsp; </div>
+
+<!-- METHOD BUTTONS -->
+
+        <input type="image" id="method_aggregate" src="images/method_global.png" style="width:40px; top:240px; left: 760px; z-index=5; position:absolute">
+        <input type="image" id="method_collect" src="images/method_collect.png" style="width:40px; top:240px; left: 800px; z-index=4; position:absolute">
+        <input type="image" id="method_network" src="images/method_network.png" style="width:40px; top:240px; left: 840px; z-index=3; position:absolute">
+        <input type="image" id="method_play" src="images/method_play.png" style="width:40px; top:240px; left: 880px; z-index=3; position:absolute">
+            
+        <div id="method" style="top:285px; left:760px; position: absolute"></div>
+            
+<!-- PLACE BUTTONS -->
+    
+        <input id="place_world" class="img-swap" type="image" src="images/place_world_off.png" style="top:340px; left: 760px; z-index=4; position:absolute"/>
+        <input id="place_drc" class="img-swap" type="image" src="images/place_drc_off.png" style="top:340px; left: 800px; z-index=4; position:absolute"/>
+        <input id="place_northkivu" class="img-swap" type="image" src="images/place_northkivu_off.png" style="top:340px; left: 840px; z-index=4; position:absolute"/>
+        <input id="place_beniregion" class="img-swap" type="image" src="images/place_beniregion_off.png" style="top:380px; left: 760px; z-index=4; position:absolute"/>
+        <input id="place_benicity" class="img-swap" type="image" src="images/place_benicity_off.png" style="top:380px; left: 800px; z-index=4; position:absolute"/>
+        <input id="place_quarters" class="img-swap" type="image" src="images/place_quarters_off.png" style="top:380px; left: 840px; z-index=4; position:absolute"/>
+        
+        <div id="place" style="top:425px; left:760px; position: absolute"></div>
+            
+<!-- LAYER BUTTONS -->
+    
+        <input id="layer_in" class="img-swap" type="image" src="images/layer_in_off.png" style="top:480px; left: 760px; z-index=4; position:absolute"/>
+        <input id="layer_fo" class="img-swap" type="image" src="images/layer_fo_off.png" style="top:502px; left: 760px; z-index=4; position:absolute"/>
+        <input id="layer_ag" class="img-swap" type="image" src="images/layer_ag_off.png" style="top:524px; left: 760px; z-index=4; position:absolute"/>
+        <input id="layer_mi" class="img-swap" type="image" src="images/layer_mi_off.png" style="top:546px; left: 760px; z-index=4; position:absolute"/>
+        <input id="layer_co" class="img-swap" type="image" src="images/layer_co_off.png" style="top:480px; left: 802px; z-index=4; position:absolute"/>
+        <input id="layer_ai" class="img-swap" type="image" src="images/layer_ai_off.png" style="top:502px; left: 802px; z-index=4; position:absolute"/>
+        <input id="layer_cu" class="img-swap" type="image" src="images/layer_cu_off.png" style="top:524px; left: 802px; z-index=4; position:absolute"/>
+        <input id="layer_po" class="img-swap" type="image" src="images/layer_po_off.png" style="top:546px; left: 802px; z-index=4; position:absolute"/>
+        
+        <div id="layer" style="top:575px; left:760px; position: absolute"></div>
+
+
+
+    </body>
+</html>
