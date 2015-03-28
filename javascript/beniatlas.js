@@ -1,36 +1,4 @@
 ////////////////////////////////////////////////////
-                    //VIEWS//
-////////////////////////////////////////////////////
-
-var world = new ol.View({
-    projection: 'EPSG:4326',
-    center: [0, 0],
-    zoom: 1.5,
-    minZoom: 1,
-    maxZoom: 3
-    });
-var drc = new ol.View({
-    projection: 'EPSG:4326',
-    center: [23.65, -3.02],
-    zoom: 5
-    });
-var northkivu = new ol.View({
-    projection: 'EPSG:4326',
-    center: [28.69, -0.60],
-    zoom: 7.4
-    });
-var beniregion = new ol.View({
-    projection: 'EPSG:4326',
-    center: [29.53, 0.42],
-    zoom: 9
-    });
-var benicity = new ol.View({
-    projection: 'EPSG:4326',
-    center: [29.46, 0.50],
-    zoom: 13
-    });
-
-////////////////////////////////////////////////////
                     //BUTTONS//
 ////////////////////////////////////////////////////
 
@@ -56,6 +24,103 @@ var layer_cu = document.getElementById('layer_cu');
 var layer_po = document.getElementById('layer_po');
 
 ////////////////////////////////////////////////////
+                    //VIEWS//
+////////////////////////////////////////////////////
+
+var world = new ol.View({//WORLD VIEW
+    projection: 'EPSG:4326',
+    center: [0, 0],
+    zoom: 1.5,
+    minZoom: 1,
+    maxZoom: 3
+    });
+    
+var drc = new ol.View({//DRC VIEW
+    projection: 'EPSG:4326',
+    center: [23.65, -3.02],
+    zoom: 5
+    });
+    
+var northkivu = new ol.View({//NORTH KIVU VIEW
+    projection: 'EPSG:4326',
+    center: [28.69, -0.60],
+    zoom: 7.4
+    });
+    
+var beniregion = new ol.View({//BENI REGION VIEW
+    projection: 'EPSG:4326',
+    center: [29.53, 0.42],
+    zoom: 9
+    });
+    
+var benicity = new ol.View({//BENI CITY VIEW
+    projection: 'EPSG:4326',
+    center: [29.46, 0.50],
+    zoom: 13
+    });
+
+////////////////////////////////////////////////////
+                    //SOURCES//
+////////////////////////////////////////////////////
+
+var worldSource = new ol.source.GeoJSON({//WORLD ADMIN SOURCE
+    url: 'data/admin_world_test.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var drcSource = new ol.source.GeoJSON({//DRC ADMIN SOURCE
+    url: 'data/admin_drc.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var drcdivSource = new ol.source.GeoJSON({//DRC DIVIDED ADMIN SOURCE
+    url: 'data/admin_drc_div.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var nkivuSource = new ol.source.GeoJSON({//NORTH KIVU ADMIN SOURCE
+    url: 'data/admin_northkivu.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var nkivudivSource = new ol.source.GeoJSON({//NORTH KIVU DIVIDED ADMIN SOURCE
+    url: 'data/admin_northkivu_div.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var beni_rSource = new ol.source.GeoJSON({//BENI REGION ADMIN SOURCE
+    url: 'data/admin_beniregion.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var beni_c_quartiersSource = new ol.source.GeoJSON({//BENI QUARTIER BOUNDARIES SOURCE
+    url: 'data/quartiers_test.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var beni_c_roadsSource = new ol.source.GeoJSON({//BENI ROADS SOURCE
+    url: 'data/roads.json',
+    projection: 'EPSG:4326'
+    });
+
+var beni_c_roadspSource = new ol.source.GeoJSON({//BENI PRIMARY ROADS SOURCE
+    url: 'data/roads_primary.json',
+    projection: 'EPSG:4326'
+    });
+    
+var drc_coSource = new ol.source.GeoJSON({//DRC CONFLICT SOURCE
+    url: 'data/conflict_test.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var beni_c_cuSource = new ol.source.GeoJSON({//BENICITY CULTURE SOURCE
+    url: 'data/culture_test.geojson',
+    projection: 'EPSG:4326'
+    });
+
+
+
+////////////////////////////////////////////////////
                     //STYLES//
 ////////////////////////////////////////////////////
 
@@ -63,6 +128,10 @@ var layer_po = document.getElementById('layer_po');
 var greyStyle = new ol.style.Style({
     fill: new ol.style.Fill({
         color: '#D8DAD9',
+        }),
+    stroke: new ol.style.Stroke({
+        color: 'white',
+        width: 0.5
         })
     });
 
@@ -82,79 +151,160 @@ var outline2Style = new ol.style.Style({
         })
     });
 
+//POINT STYLE CONFLICT
+var drc_coStyle = new ol.style.Style({
+    image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+            color: '#ff9900',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'rgba(20,130,150,0.8)',
+            width: 1
+            })
+        })
+    });
+    
+//POINT STYLE CULTURE
+var beni_c_cuStyle = new ol.style.Style({
+    image: new ol.style.Circle({
+        radius: 4,
+        fill: new ol.style.Fill({
+            color: '#ff9900',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'rgba(20,130,150,0.8)',
+            width: 1
+            })
+        })
+    });
+    
+var drc_coHiStyle = new ol.style.Style({
+    image: new ol.style.Circle({
+        radius: 10,
+        fill: new ol.style.Fill({
+            color: 'rgba(150,150,200,0.6)',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'rgba(20,30,100,0.8)',
+            width: 3
+            })
+        })
+    });
+    
 ////////////////////////////////////////////////////
-                    //ADMIN LAYERS//
+                    //FONT STYLE FUNCTIONS//
+////////////////////////////////////////////////////
+    
+var quartiertextStyleFunction = function(feature, resolution) {
+    var fontSize = '18';
+    if(resolution>=39134) {
+        fontSize = '10';
+        } else if(resolution>=9782) {
+        fontSize = '14';
+        } else if(resolution>=2444) {
+        fontSize = '16';
+        }
+    return [new ol.style.Style({
+        text: new ol.style.Text({
+            font: '14px sans-serif,helvetica',
+            text: feature.get('name'),
+            fill: new ol.style.Fill({
+                color: 'black'
+                }),
+            stroke: new ol.style.Stroke({
+                color: '#ddd',
+                width: 1
+                })
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'black',
+            width: 1
+            })
+        })];
+    };
+    
+    
+    
+////////////////////////////////////////////////////
+                    //STYLE FUNCTIONS//
+////////////////////////////////////////////////////
+    
+var selectedTextStyleFunction = function(name) {
+    return new ol.style.Style({
+        text: new ol.style.Text({
+            font: '14px helvetica,sans-serif',
+            text: name,
+            fill: new ol.style.Fill({
+                color: '#000'
+                }),
+            stroke: new ol.style.Stroke({
+                color: '#fff',
+                width: 2
+                })
+            })
+        });
+    };
+    
+//FILL STYLE CONFLICT
+var getIndex = function(feature) {
+    return feature.attributes["peace2013"];
+    };
+
+
+//parse number that is pulled from feature
+var peaceIndex = parseInt($('getIndex').val());
+
+//devide index number by for to get number between 0 and 1
+var graduateOpacity = peaceIndex / 4
+
+
+
+////////////////////////////////////////////////////
+                    //LAYERS//
 ////////////////////////////////////////////////////
 
-//ADMINISTRATIVE WORLD LAYER
-var worldLayer = new ol.layer.Vector({
-    title: 'World',
-    source: new ol.source.GeoJSON({
-        url: 'data/admin_world.geojson'
-        }),
+var worldLayer = new ol.layer.Vector({//WORLD ADMIN LAYER
+    source: worldSource,
     style: greyStyle
     });
 
-//ADMINISTRATIVE DRC LAYER
-var drcLayer = new ol.layer.Vector({
-    title: 'Democratic Republic of Congo',
-    source: new ol.source.GeoJSON({
-        url: 'data/admin_drc.geojson'
-        }),
+var drcLayer = new ol.layer.Vector({//DRC ADMIN LAYER
+    source: drcSource,
+    style: outlineStyle
+    });
+
+var drcdivLayer = new ol.layer.Vector({//DRC DIVIDED ADMIN LAYER
+    source: drcdivSource,
     style: greyStyle
     });
     
-//ADMINISTRATIVE NORTH KIVU LAYER
-var northkivuLayer = new ol.layer.Vector({
-    title: 'North Kivu',
-    source: new ol.source.GeoJSON({
-        url: 'data/admin_northkivu.geojson'
-        }),
+var nkivuLayer = new ol.layer.Vector({//NORTHKIVU ADMIN LAYER
+    source: nkivuSource,
     style: outlineStyle
     });
     
-//ADMINISTRATIVE NORTH KIVU DIVIDED LAYER
-var northkivu2Layer = new ol.layer.Vector({
-    title: 'North Kivu',
-    source: new ol.source.GeoJSON({
-        url: 'data/admin_northkivu_div.geojson'
-        }),
+var nkivudivLayer = new ol.layer.Vector({//NORTHKIVU DIVIDED ADMIN LAYER
+    source: nkivudivSource,
     style: greyStyle
     });
     
-//ADMINISTRATIVE BENI REGION LAYER
-var beniregionLayer = new ol.layer.Vector({
-    title: 'Beni Region',
-    source: new ol.source.GeoJSON({
-        url: 'data/admin_beniregion.geojson'
-        }),
+var beni_rLayer = new ol.layer.Vector({//BENIREGION ADMIN LAYER
+    source: beni_rSource,
     style: greyStyle
     });
     
 //ADMINISTRATIVE BENI POINT LAYER
 
 //quartier boundaries layer
-var quartiersLayer = new ol.layer.Image({
-    source: new ol.source.ImageVector({
-        source: new ol.source.GeoJSON({
-            projection: 'EPSG:4326',
-            url: 'data/quartiers.geojson'
-            }),
-        style: new ol.style.Style({
-            stroke: new ol.style.Stroke({
-                color:'black',
-                width: 2
-                })
-            })
-        })
+var beni_c_quartiersLayer = new ol.layer.Vector({
+    source: beni_c_quartiersSource,
+    style: quartiertextStyleFunction
     });
 
 //roads layer
 var roadsLayer = new ol.layer.Vector({
-    title: 'Roads',
-    source: new ol.source.GeoJSON({
-        url: 'data/roads.json'
-        }),
+    source: beni_c_roadsSource,
     style: new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'grey',
@@ -165,10 +315,7 @@ var roadsLayer = new ol.layer.Vector({
    
 //roads layer white
 var roads2Layer = new ol.layer.Vector({
-    title: 'Roads',
-    source: new ol.source.GeoJSON({
-        url: 'data/roads.json'
-        }),
+    source: beni_c_roadsSource,
     style: new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'white',
@@ -179,10 +326,7 @@ var roads2Layer = new ol.layer.Vector({
     
 //primary roads layer
 var roads_primaryLayer = new ol.layer.Vector({
-    title: 'Roads Primary',
-    source: new ol.source.GeoJSON({
-        url: 'data/roads_primary.json'
-        }),
+    source: beni_c_roadspSource,
     style: new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'grey',
@@ -191,6 +335,20 @@ var roads_primaryLayer = new ol.layer.Vector({
         })
     });
 
+// conflict drc layer
+var drc_coLayer = new ol.layer.Vector({
+    source: drc_coSource,
+    style: drc_coStyle
+    });
+    
+// culture benicity layer
+var beni_c_cuLayer = new ol.layer.Vector({
+    source: beni_c_cuSource,
+    style: beni_c_cuStyle
+    });
+    
+
+
 ////////////////////////////////////////////////////
                     //LAYER GROUPS//
 ////////////////////////////////////////////////////
@@ -198,22 +356,85 @@ var roads_primaryLayer = new ol.layer.Vector({
 var group_world = new ol.layer.Group({
     layers: [worldLayer, drcLayer]
     });
-    
+
 var group_drc = new ol.layer.Group({
-    layers: [drcLayer, northkivuLayer]
+    layers: [drcdivLayer, nkivuLayer]
     });
     
 var group_northkivu = new ol.layer.Group({
-    layers: [northkivu2Layer, beniregionLayer]
+    layers: [nkivudivLayer, beni_rLayer]
     });
     
 var group_beniregion = new ol.layer.Group({
-    layers: [beniregionLayer]
+    layers: [beni_rLayer]
     });
     
 var group_benicity = new ol.layer.Group({
     layers: [roadsLayer, roads2Layer, roads_primaryLayer]
     });
+
+////////////////////////////////////////////////////
+                    //INTERACTIONS//
+////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+//change to red when click
+var selectInteraction = new ol.interaction.Select({
+    layers: [beni_c_quartiersLayer, drcLayer, nkivuLayer],
+    style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3,
+            }),
+        fill: new ol.style.Fill({
+            color: 'rgba(0,0,255,0.1)',
+            })
+        })
+    });
+
+//change to blue when hover
+var selectPointerMove = new ol.interaction.Select({
+    layers: [beni_c_quartiersLayer, drcLayer, nkivuLayer],
+    style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'red',
+            width: 3,
+            }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255,0,0,0.1)',
+            })
+        }),
+    condition: ol.events.condition.pointerMove
+    });
+    
+    
+
+//ZOOM TO EXTENTS
+var zoomExtents = function(feature) {
+    return feature;
+
+    var minx = feature.get('MINX');
+    var miny = feature.get('MINY');
+    var maxx = feature.get('MAXX');
+    var maxy = feature.get('MAXY');
+    
+    var minlon = parseInt($('minx').val());
+    var minlat = parseInt($('miny').val());
+    var maxlon = parseInt($('maxx').val());
+    var maxlat = parseInt($('maxy').val());
+    
+    var extent = [minlon, minlat, maxlon, maxlat];
+    extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
+    
+    map.setView().calculateExtent(extent, map.getSize());
+    };
+
 
 
 
@@ -223,17 +444,15 @@ var group_benicity = new ol.layer.Group({
 
 $(document).ready(function() {
 
-    /*var selected = src*/
-
     //IMAGE SWAP FOR ICONS
-    $(".img-swap").live('click', function() {
+    /*$(".img-swap").live('click', function() {
         if ($(this).attr("class") == "img-swap") {
             this.src = this.src.replace("_off","_on");
         } else {
             this.src = this.src.replace("_on","_off");
         }
         $(this).toggleClass("on");
-        });
+        });*/
 
     //SHOW ONLY ICONS APPLICABLE TO AGGREGATE METHOD
     $('#method_aggregate').on('click', function() {
@@ -243,17 +462,18 @@ $(document).ready(function() {
         $('#place_beniregion').show();
         $('#place_benicity').show();
         $('#place_quarters').show();
+        $('#layer_co').show();
         });
 
     //DESCRIPTION OF AGGREGATE METHOD ON HOVER        
-    $(function () {
-        $('#method_aggregate').hover(function () {
-            var description = "Look at maps from different sources"
-            $('#method').html(description);
-            }, function () {
-                $('#method').empty();
-            });
+
+    $('#method_aggregate').hover(function () {
+        var description = "Look at maps from different sources"
+        $('#method').html(description);
+        }, function () {
+            $('#method').empty();
         });
+
         
     //SHOW ONLY ICONS APPLICABLE TO COLLECT METHOD 
     $('#method_collect').on('click', function() {
@@ -263,6 +483,7 @@ $(document).ready(function() {
         $('#place_beniregion').hide();
         $('#place_benicity').show();
         $('#place_quarters').show();
+        $('#layer_co').hide();
         });
         
     //DESCRIPTION OF COLLECT METHOD ON HOVER      
@@ -283,6 +504,7 @@ $(document).ready(function() {
         $('#place_beniregion').hide();
         $('#place_benicity').show();
         $('#place_quarters').show();
+        $('#layer_co').hide();
         });
         
     //DESCRIPTION OF NETWORK METHOD ON HOVER      
@@ -303,6 +525,7 @@ $(document).ready(function() {
         $('#place_beniregion').show();
         $('#place_benicity').hide();
         $('#place_quarters').show();
+        $('#layer_co').hide();
         });
         
     //DESCRIPTION OF NETWORK METHOD ON HOVER      
@@ -317,9 +540,13 @@ $(document).ready(function() {
 
     //CHANGE VIEW TO WORLD ON CLICK
     $('#place_world').on('click', function() {
+        var circle = $('#circle');
+        circle.css('fill', '#D8DAD9');
         drcLayer.setStyle(outlineStyle);
         map.setView(world);
         map.setLayerGroup(group_world);
+        map.addInteraction(selectPointerMove);
+        map.addInteraction(selectInteraction);
         });
         
     //DESCRIPTION OF WORLD ON HOVER      
@@ -335,7 +562,7 @@ $(document).ready(function() {
     //CHANGE VIEW TO DRC ON CLICK
     $('#place_drc').on('click', function() {
         drcLayer.setStyle(greyStyle);
-        northkivuLayer.setStyle(outlineStyle);
+        nkivuLayer.setStyle(outlineStyle);
         map.setView(drc);
         map.setLayerGroup(group_drc);
         });
@@ -352,8 +579,8 @@ $(document).ready(function() {
         
     //CHANGE VIEW TO NORTH KIVU ON CLICK
     $('#place_northkivu').on('click', function() {
-        northkivuLayer.setStyle(greyStyle);
-        beniregionLayer.setStyle(outline2Style);
+        nkivuLayer.setStyle(greyStyle);
+        beni_rLayer.setStyle(outline2Style);
         map.setView(northkivu);
         map.setLayerGroup(group_northkivu);
         });
@@ -370,7 +597,7 @@ $(document).ready(function() {
         
     //CHANGE VIEW TO BENI REGION ON CLICK
     $('#place_beniregion').on('click', function() {
-        beniregionLayer.setStyle(greyStyle);
+        beni_rLayer.setStyle(greyStyle);
         map.setView(beniregion);
         map.setLayerGroup(group_beniregion);
         });
@@ -380,7 +607,8 @@ $(document).ready(function() {
         $('#place_beniregion').hover(function () {
             var description = "Beni Region"
             $('#place').html(description);
-            }, function () {
+            }, 
+            function () {
                 $('#place').empty();
             });
         });
@@ -389,7 +617,9 @@ $(document).ready(function() {
     $('#place_benicity').on('click', function() {
         map.setView(benicity);
         map.setLayerGroup(group_benicity);
-        map.removeLayer(quartiersLayer);
+        map.removeLayer(beni_c_quartiersLayer);
+        var description = "Beni"
+        $('#place').html(description);
         });
         
     //DESCRIPTION OF BENI CITY ON HOVER      
@@ -406,9 +636,10 @@ $(document).ready(function() {
     $('#place_quarters').on('click', function() {
         map.setView(benicity);
         map.setLayerGroup(group_benicity);
-        map.addLayer(quartiersLayer);
+        map.addLayer(beni_c_quartiersLayer);
+        map.addInteraction(selectPointerMove);
+        map.addInteraction(selectInteraction);
         });
-    });
     
     //DESCRIPTION OF BENI CITY ON HOVER      
     $(function () {
@@ -459,6 +690,12 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
+        
+    //ADD CONFLICT LAYER ON CLICK
+    $('#layer_co').on('click', function() {
+        map.addLayer(drc_coLayer);
+        });
+
 
     //DESCRIPTION OF CONFLICT LAYER ON HOVER      
     $(function () {
@@ -480,6 +717,11 @@ $(document).ready(function() {
             });
         });
         
+    //ADD CONFLICT LAYER ON CLICK
+    $('#layer_cu').on('click', function() {
+        map.addLayer(beni_c_cuLayer);
+        });
+        
     //DESCRIPTION OF CULTURE LAYER ON HOVER      
     $(function () {
         $('#layer_cu').hover(function () {
@@ -499,8 +741,129 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
+
+       
+////////////////////////////////////////////////////
+                    //CULTURE STYLE FUNCTIONS//
+////////////////////////////////////////////////////
+          
+        
+        
         
 ////////////////////////////////////////////////////
-                    //LEGEND FUNCTIONS//
+                    //CONFLICT STYLE FUNCTIONS//
+////////////////////////////////////////////////////
+/*
+    var selectedFeatures = [];
+
+    // Unselect previous selected features
+    function unselectPreviousFeatures() {
+        var i;
+        for(i=0; i< selectedFeatures.length; i++) {
+            selectedFeatures[i].setStyle(null);
+        }
+        selectedFeatures = [];
+        }
+
+    // Handle pointer
+    
+    map.on('pointermove', function(event) {
+        unselectPreviousFeatures();
+        map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
+            feature.setStyle([
+                conflictdrcHiStyle,
+                selectedTextStyleFunction(feature.get('type'))
+                ]);
+            selectedFeatures.push(feature);
+            });
+        });
+        
+    });
+*/
+////////////////////////////////////////////////////
+                    //CHLOROPLETH FUNCTIONS//
 ////////////////////////////////////////////////////
 
+/*
+
+//STYLE FUNCTION FOR CONFLICT
+var conflictworldStyle = function (feature) {
+    var defaultStyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#D8DAD9',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 0.5
+            })
+        });
+        
+    var veryhighStyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#48956E',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 0.5
+            })
+        });
+    var highStyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#97B39E',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 0.5
+            })
+        });
+    var mediumStyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#020100',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 0.5
+            })
+        });
+    var lowStyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#D97936',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 0.5
+            })
+        });
+    var verylowStyle = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: '#C53E59',
+            }),
+        stroke: new ol.style.Stroke({
+            color: 'white',
+            width: 0.5
+            })
+        });
+
+    var getIndex = feature.get("peace_test");
+
+    var peaceIndex = parseInt(getIndex);
+    peaceIndex.toFixed(2);
+    return function(feature, resolution) {
+        if (peaceIndex >= 1.0 && peaceIndex < 1.5) {
+            return veryhighStyle;
+            } else if (peaceIndex >= 1.5 && peaceIndex < 2.0) {
+                return highStyle;
+            } else if (peaceIndex >= 2.0 && peaceIndex < 2.5) {
+                return mediumStyle;
+            } else if (peaceIndex >= 2.5 && peaceIndex < 3.0) {
+                return lowStyle;
+            } else if (peaceIndex > 3.0) {
+                return verylowStyle;
+            } else {
+                return defaultStyle;
+                }
+            };
+        }
+worldLayer.setStyle(conflictworldStyle);
+*/
+    });

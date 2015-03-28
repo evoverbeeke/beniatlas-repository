@@ -4,7 +4,7 @@
     <head>
         <title>Beni Atlas</title>
         <link rel="stylesheet" href="stylesheets/ol.css" type="text/css">
-        <link rel="stylesheet" href="stylesheets/leaflet_beniatlas.css">
+        <link rel="stylesheet" href="stylesheets/beniatlas.css">
         <script type="text/javascript" src="javascript/jquery.min.js"></script>
         <script type="text/javascript" src="javascript/ol.js"></script>
 
@@ -16,7 +16,7 @@
         
         <div>
             <p>
-                <a href="OpenLayers_index2.html">
+                <a href="index.html">
                     <img src="images/logo_beniatlas.png" alt="BeniAtlas" style="top:80px; left: 30px; position:absolute">
                 </a>
             </p>
@@ -32,23 +32,20 @@
                     </ul>
             </p>
                     
-            <img class="northarrow" src="images/northarrow.png" alt="North Arrow" width="30px">
+
+
                 
         </div>
         
-        <div id="map" class="map">       
-        
-            <!--LEGEND DIV-->
+        <div>
+            <div id="map" class="map"></div>  
+            <img class="northarrow" src="images/northarrow.png" alt="North Arrow" width="30px">
+            <div class="menu">
+                <p>M</p>
+                </div>
             <div class="legend">
-                <p>
-                    <ul>
-                        <li>Schools</li>
-                        <li>Churches</li>
-                    </ul>
-                </p>
-            </div>
-         </div>
-
+            </div>  
+        </div>
         
 <script type="text/javascript">
   
@@ -74,88 +71,12 @@ map.addLayer(roads2Layer);
 map.addLayer(roads_primaryLayer);
 
         
-var quartiersFeature = new ol.Feature(quartiersLayer);
-    
-var marketsLayer = new ol.layer.Vector({
-    title: 'Markets',
-    source: new ol.source.GeoJSON({
-        url: 'data/markets.json'
-        }),
-    style: new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 4,
-            fill: new ol.style.Fill({
-                color: '#C4CA74',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'black',
-                width: 0.5
-                })
-            })
-        })
-    });
-
-var featureOverlay = new ol.FeatureOverlay({
-    map: map
-    });
     
 
-//change to red when click
-var selectInteraction = new ol.interaction.Select({
-    layers: [quartiersLayer],
-    style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: 'blue',
-            width: 3,
-            }),
-        fill: new ol.style.Fill({
-            color: 'rgba(0,0,255,0.1)',
-            })
-        })
-    });
-
-//change to blue when hover
-var selectPointerMove = new ol.interaction.Select({
-    layers: [quartiersLayer],
-    style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 3,
-            }),
-        fill: new ol.style.Fill({
-            color: 'rgba(255,0,0,0.1)',
-            })
-        }),
-    condition: ol.events.condition.pointerMove
-    });
-    
-map.addInteraction(selectPointerMove);
-map.addInteraction(selectInteraction);
 
 
-var zoomExtents = function(event) {
 
-    var selectedFeature = selectInteraction.getFeature();
-    return feature;
 
-    var info = feature.get('name');
-    var minx = feature.get('MINX');
-    var miny = feature.get('MINY');
-    var maxx = feature.get('MAXX');
-    var maxy = feature.get('MAXY');
-    
-    var minlon = parseInt($('minx').val());
-    var minlat = parseInt($('miny').val());
-    var maxlon = parseInt($('maxx').val());
-    var maxlat = parseInt($('maxy').val());
-    
-    var extent = [minlon, minlat, maxlon, maxlat];
-    alert (minlon);
-    /*
-    extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
-    
-    map.getView().calculateExtent(extent, map.getSize());*/
-    };
     
 /*
 var displayFeatureInfo = function(event) {
@@ -311,12 +232,12 @@ function changeImage_in() {
             
 <!-- PLACE BUTTONS -->
     
-        <input id="place_world" class="img-swap" type="image" src="images/place_world_off.png" style="top:340px; left: 760px; z-index=4; position:absolute"/>
-        <input id="place_drc" class="img-swap" type="image" src="images/place_drc_off.png" style="top:340px; left: 800px; z-index=4; position:absolute"/>
-        <input id="place_northkivu" class="img-swap" type="image" src="images/place_northkivu_off.png" style="top:340px; left: 840px; z-index=4; position:absolute"/>
-        <input id="place_beniregion" class="img-swap" type="image" src="images/place_beniregion_off.png" style="top:380px; left: 760px; z-index=4; position:absolute"/>
-        <input id="place_benicity" class="img-swap" type="image" src="images/place_benicity_off.png" style="top:380px; left: 800px; z-index=4; position:absolute"/>
-        <input id="place_quarters" class="img-swap" type="image" src="images/place_quarters_off.png" style="top:380px; left: 840px; z-index=4; position:absolute"/>
+        <input id="place_world" class="img-swap" type="image" src="images/place_world_off.svg" style="top:340px; left: 760px; z-index=4; position:absolute"/>
+        <input id="place_drc" class="img-swap" type="image" src="images/place_drc_off.svg" style="top:340px; left: 800px; z-index=4; position:absolute"/>
+        <input id="place_northkivu" class="img-swap" type="image" src="images/place_northkivu_off.svg" style="top:340px; left: 840px; z-index=4; position:absolute"/>
+        <input id="place_beniregion" class="img-swap" type="image" src="images/place_beniregion_off.svg" style="top:380px; left: 760px; z-index=4; position:absolute"/>
+        <input id="place_benicity" class="img-swap" type="image" src="images/place_benicity_off.svg" style="top:380px; left: 800px; z-index=4; position:absolute"/>
+        <input id="place_quarters" class="img-swap" type="image" src="images/place_quarters_off.svg" style="top:380px; left: 840px; z-index=4; position:absolute"/>
         
         <div id="place" style="top:425px; left:760px; position: absolute"></div>
             
