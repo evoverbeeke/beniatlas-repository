@@ -34,25 +34,25 @@ var world = new ol.View({//WORLD VIEW
     minZoom: 1,
     maxZoom: 3
     });
-    
+
 var drc = new ol.View({//DRC VIEW
     projection: 'EPSG:4326',
     center: [23.65, -3.02],
     zoom: 5
     });
-    
+
 var northkivu = new ol.View({//NORTH KIVU VIEW
     projection: 'EPSG:4326',
     center: [28.69, -0.60],
     zoom: 7.4
     });
-    
+
 var beniregion = new ol.View({//BENI REGION VIEW
     projection: 'EPSG:4326',
     center: [29.53, 0.42],
     zoom: 9
     });
-    
+
 var benicity = new ol.View({//BENI CITY VIEW
     projection: 'EPSG:4326',
     center: [29.46, 0.50],
@@ -67,37 +67,37 @@ var worldSource = new ol.source.GeoJSON({//WORLD ADMIN SOURCE
     url: 'data/admin_world_test.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var drcSource = new ol.source.GeoJSON({//DRC ADMIN SOURCE
     url: 'data/admin_drc.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var drcdivSource = new ol.source.GeoJSON({//DRC DIVIDED ADMIN SOURCE
     url: 'data/admin_drc_div.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var nkivuSource = new ol.source.GeoJSON({//NORTH KIVU ADMIN SOURCE
     url: 'data/admin_northkivu.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var nkivudivSource = new ol.source.GeoJSON({//NORTH KIVU DIVIDED ADMIN SOURCE
     url: 'data/admin_northkivu_div.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var beni_rSource = new ol.source.GeoJSON({//BENI REGION ADMIN SOURCE
     url: 'data/admin_beniregion.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var beni_c_quartiersSource = new ol.source.GeoJSON({//BENI QUARTIER BOUNDARIES SOURCE
     url: 'data/quartiers_test.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var beni_c_roadsSource = new ol.source.GeoJSON({//BENI ROADS SOURCE
     url: 'data/roads.json',
     projection: 'EPSG:4326'
@@ -107,12 +107,12 @@ var beni_c_roadspSource = new ol.source.GeoJSON({//BENI PRIMARY ROADS SOURCE
     url: 'data/roads_primary.json',
     projection: 'EPSG:4326'
     });
-    
+
 var drc_coSource = new ol.source.GeoJSON({//DRC CONFLICT SOURCE
     url: 'data/conflict_test.geojson',
     projection: 'EPSG:4326'
     });
-    
+
 var beni_c_cuSource = new ol.source.GeoJSON({//BENICITY CULTURE SOURCE
     url: 'data/culture_test.geojson',
     projection: 'EPSG:4326'
@@ -142,7 +142,7 @@ var outlineStyle = new ol.style.Style({
         width: 1
         })
     });
-    
+
 //BLACK OUTLINE 2 STYLE
 var outline2Style = new ol.style.Style({
     stroke: new ol.style.Stroke({
@@ -164,7 +164,7 @@ var drc_coStyle = new ol.style.Style({
             })
         })
     });
-    
+
 //POINT STYLE CULTURE
 var beni_c_cuStyle = new ol.style.Style({
     image: new ol.style.Circle({
@@ -178,7 +178,7 @@ var beni_c_cuStyle = new ol.style.Style({
             })
         })
     });
-    
+
 var drc_coHiStyle = new ol.style.Style({
     image: new ol.style.Circle({
         radius: 10,
@@ -191,11 +191,11 @@ var drc_coHiStyle = new ol.style.Style({
             })
         })
     });
-    
+
 ////////////////////////////////////////////////////
                     //FONT STYLE FUNCTIONS//
 ////////////////////////////////////////////////////
-    
+
 var quartiertextStyleFunction = function(feature, resolution) {
     var fontSize = '18';
     if(resolution>=39134) {
@@ -223,13 +223,13 @@ var quartiertextStyleFunction = function(feature, resolution) {
             })
         })];
     };
-    
-    
-    
+
+
+
 ////////////////////////////////////////////////////
                     //STYLE FUNCTIONS//
 ////////////////////////////////////////////////////
-    
+
 var selectedTextStyleFunction = function(name) {
     return new ol.style.Style({
         text: new ol.style.Text({
@@ -245,7 +245,7 @@ var selectedTextStyleFunction = function(name) {
             })
         });
     };
-    
+
 //FILL STYLE CONFLICT
 var getIndex = function(feature) {
     return feature.attributes["peace2013"];
@@ -278,22 +278,22 @@ var drcdivLayer = new ol.layer.Vector({//DRC DIVIDED ADMIN LAYER
     source: drcdivSource,
     style: greyStyle
     });
-    
+
 var nkivuLayer = new ol.layer.Vector({//NORTHKIVU ADMIN LAYER
     source: nkivuSource,
     style: outlineStyle
     });
-    
+
 var nkivudivLayer = new ol.layer.Vector({//NORTHKIVU DIVIDED ADMIN LAYER
     source: nkivudivSource,
     style: greyStyle
     });
-    
+
 var beni_rLayer = new ol.layer.Vector({//BENIREGION ADMIN LAYER
     source: beni_rSource,
     style: greyStyle
     });
-    
+
 //ADMINISTRATIVE BENI POINT LAYER
 
 //quartier boundaries layer
@@ -312,7 +312,7 @@ var roadsLayer = new ol.layer.Vector({
             })
         })
     });
-   
+
 //roads layer white
 var roads2Layer = new ol.layer.Vector({
     source: beni_c_roadsSource,
@@ -323,7 +323,7 @@ var roads2Layer = new ol.layer.Vector({
             })
         })
     });
-    
+
 //primary roads layer
 var roads_primaryLayer = new ol.layer.Vector({
     source: beni_c_roadspSource,
@@ -340,13 +340,13 @@ var drc_coLayer = new ol.layer.Vector({
     source: drc_coSource,
     style: drc_coStyle
     });
-    
+
 // culture benicity layer
 var beni_c_cuLayer = new ol.layer.Vector({
     source: beni_c_cuSource,
     style: beni_c_cuStyle
     });
-    
+
 
 
 ////////////////////////////////////////////////////
@@ -360,15 +360,15 @@ var group_world = new ol.layer.Group({
 var group_drc = new ol.layer.Group({
     layers: [drcdivLayer, nkivuLayer]
     });
-    
+
 var group_northkivu = new ol.layer.Group({
     layers: [nkivudivLayer, beni_rLayer]
     });
-    
+
 var group_beniregion = new ol.layer.Group({
     layers: [beni_rLayer]
     });
-    
+
 var group_benicity = new ol.layer.Group({
     layers: [roadsLayer, roads2Layer, roads_primaryLayer]
     });
@@ -412,8 +412,8 @@ var selectPointerMove = new ol.interaction.Select({
         }),
     condition: ol.events.condition.pointerMove
     });
-    
-    
+
+
 
 //ZOOM TO EXTENTS
 var zoomExtents = function(feature) {
@@ -423,15 +423,15 @@ var zoomExtents = function(feature) {
     var miny = feature.get('MINY');
     var maxx = feature.get('MAXX');
     var maxy = feature.get('MAXY');
-    
+
     var minlon = parseInt($('minx').val());
     var minlat = parseInt($('miny').val());
     var maxlon = parseInt($('maxx').val());
     var maxlat = parseInt($('maxy').val());
-    
+
     var extent = [minlon, minlat, maxlon, maxlat];
     extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", "EPSG:3857"));
-    
+
     map.setView().calculateExtent(extent, map.getSize());
     };
 
@@ -465,7 +465,7 @@ $(document).ready(function() {
         $('#layer_co').show();
         });
 
-    //DESCRIPTION OF AGGREGATE METHOD ON HOVER        
+    //DESCRIPTION OF AGGREGATE METHOD ON HOVER
 
     $('#method_aggregate').hover(function () {
         var description = "Look at maps from different sources"
@@ -474,8 +474,8 @@ $(document).ready(function() {
             $('#method').empty();
         });
 
-        
-    //SHOW ONLY ICONS APPLICABLE TO COLLECT METHOD 
+
+    //SHOW ONLY ICONS APPLICABLE TO COLLECT METHOD
     $('#method_collect').on('click', function() {
         $('#place_world').hide();
         $('#place_drc').hide();
@@ -485,8 +485,8 @@ $(document).ready(function() {
         $('#place_quarters').show();
         $('#layer_co').hide();
         });
-        
-    //DESCRIPTION OF COLLECT METHOD ON HOVER      
+
+    //DESCRIPTION OF COLLECT METHOD ON HOVER
     $(function () {
         $('#method_collect').hover(function () {
             var description = "Contribute to the map"
@@ -495,7 +495,7 @@ $(document).ready(function() {
                 $('#method').empty();
             });
         });
-        
+
     //SHOW ONLY ICONS APPLICABLE TO NETWORK METHOD
     $('#method_network').on('click', function() {
         $('#place_world').hide();
@@ -506,8 +506,8 @@ $(document).ready(function() {
         $('#place_quarters').show();
         $('#layer_co').hide();
         });
-        
-    //DESCRIPTION OF NETWORK METHOD ON HOVER      
+
+    //DESCRIPTION OF NETWORK METHOD ON HOVER
     $(function () {
         $('#method_network').hover(function () {
             var description = "Connect with people"
@@ -516,7 +516,7 @@ $(document).ready(function() {
                 $('#method').empty();
             });
         });
-        
+
     //SHOW ONLY ICONS APPLICABLE TO PLAY METHOD
     $('#method_play').on('click', function() {
         $('#place_world').hide();
@@ -527,8 +527,8 @@ $(document).ready(function() {
         $('#place_quarters').show();
         $('#layer_co').hide();
         });
-        
-    //DESCRIPTION OF NETWORK METHOD ON HOVER      
+
+    //DESCRIPTION OF NETWORK METHOD ON HOVER
     $(function () {
         $('#method_play').hover(function () {
             var description = "Play a simulation"
@@ -548,8 +548,8 @@ $(document).ready(function() {
         map.addInteraction(selectPointerMove);
         map.addInteraction(selectInteraction);
         });
-        
-    //DESCRIPTION OF WORLD ON HOVER      
+
+    //DESCRIPTION OF WORLD ON HOVER
     $(function () {
         $('#place_world').hover(function () {
             var description = "World"
@@ -558,7 +558,7 @@ $(document).ready(function() {
                 $('#place').empty();
             });
         });
-        
+
     //CHANGE VIEW TO DRC ON CLICK
     $('#place_drc').on('click', function() {
         drcLayer.setStyle(greyStyle);
@@ -566,8 +566,8 @@ $(document).ready(function() {
         map.setView(drc);
         map.setLayerGroup(group_drc);
         });
-        
-    //DESCRIPTION OF DRC ON HOVER      
+
+    //DESCRIPTION OF DRC ON HOVER
     $(function () {
         $('#place_drc').hover(function () {
             var description = "Democratic Republic of Congo"
@@ -576,7 +576,7 @@ $(document).ready(function() {
                 $('#place').empty();
             });
         });
-        
+
     //CHANGE VIEW TO NORTH KIVU ON CLICK
     $('#place_northkivu').on('click', function() {
         nkivuLayer.setStyle(greyStyle);
@@ -584,8 +584,8 @@ $(document).ready(function() {
         map.setView(northkivu);
         map.setLayerGroup(group_northkivu);
         });
-        
-    //DESCRIPTION OF NORTH KIVU ON HOVER      
+
+    //DESCRIPTION OF NORTH KIVU ON HOVER
     $(function () {
         $('#place_northkivu').hover(function () {
             var description = "North Kivu"
@@ -594,25 +594,25 @@ $(document).ready(function() {
                 $('#place').empty();
             });
         });
-        
+
     //CHANGE VIEW TO BENI REGION ON CLICK
     $('#place_beniregion').on('click', function() {
         beni_rLayer.setStyle(greyStyle);
         map.setView(beniregion);
         map.setLayerGroup(group_beniregion);
         });
-        
-    //DESCRIPTION OF BENI REGION ON HOVER      
+
+    //DESCRIPTION OF BENI REGION ON HOVER
     $(function () {
         $('#place_beniregion').hover(function () {
             var description = "Beni Region"
             $('#place').html(description);
-            }, 
+            },
             function () {
                 $('#place').empty();
             });
         });
-        
+
     //CHANGE VIEW TO BENI CITY ON CLICK
     $('#place_benicity').on('click', function() {
         map.setView(benicity);
@@ -621,8 +621,8 @@ $(document).ready(function() {
         var description = "Beni"
         $('#place').html(description);
         });
-        
-    //DESCRIPTION OF BENI CITY ON HOVER      
+
+    //DESCRIPTION OF BENI CITY ON HOVER
     $(function () {
         $('#place_benicity').hover(function () {
             var description = "Beni"
@@ -631,7 +631,7 @@ $(document).ready(function() {
                 $('#place').empty();
             });
         });
-    
+
     //SHOW QUARTIER BOUNDARIES
     $('#place_quarters').on('click', function() {
         map.setView(benicity);
@@ -640,8 +640,8 @@ $(document).ready(function() {
         map.addInteraction(selectPointerMove);
         map.addInteraction(selectInteraction);
         });
-    
-    //DESCRIPTION OF BENI CITY ON HOVER      
+
+    //DESCRIPTION OF BENI CITY ON HOVER
     $(function () {
         $('#place_quarters').hover(function () {
             var description = "Neighbourhoods"
@@ -651,7 +651,7 @@ $(document).ready(function() {
             });
         });
 
-    //DESCRIPTION OF INFRASTRUCTURE LAYER ON HOVER      
+    //DESCRIPTION OF INFRASTRUCTURE LAYER ON HOVER
     $(function () {
         $('#layer_in').hover(function () {
             var description = "Infrastructure"
@@ -660,8 +660,8 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
-    //DESCRIPTION OF FORESTRY LAYER ON HOVER      
+
+    //DESCRIPTION OF FORESTRY LAYER ON HOVER
     $(function () {
         $('#layer_fo').hover(function () {
             var description = "Forestry"
@@ -671,7 +671,7 @@ $(document).ready(function() {
             });
         });
 
-    //DESCRIPTION OF AGRICULTURE LAYER ON HOVER      
+    //DESCRIPTION OF AGRICULTURE LAYER ON HOVER
     $(function () {
         $('#layer_ag').hover(function () {
             var description = "Agriculture"
@@ -680,8 +680,8 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
-    //DESCRIPTION OF MINING LAYER ON HOVER      
+
+    //DESCRIPTION OF MINING LAYER ON HOVER
     $(function () {
         $('#layer_mi').hover(function () {
             var description = "Mining"
@@ -690,14 +690,14 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
+
     //ADD CONFLICT LAYER ON CLICK
     $('#layer_co').on('click', function() {
         map.addLayer(drc_coLayer);
         });
 
 
-    //DESCRIPTION OF CONFLICT LAYER ON HOVER      
+    //DESCRIPTION OF CONFLICT LAYER ON HOVER
     $(function () {
         $('#layer_co').hover(function () {
             var description = "Conflict"
@@ -706,8 +706,8 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
-    //DESCRIPTION OF AID LAYER ON HOVER      
+
+    //DESCRIPTION OF AID LAYER ON HOVER
     $(function () {
         $('#layer_ai').hover(function () {
             var description = "Aid"
@@ -716,13 +716,13 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
+
     //ADD CONFLICT LAYER ON CLICK
     $('#layer_cu').on('click', function() {
         map.addLayer(beni_c_cuLayer);
         });
-        
-    //DESCRIPTION OF CULTURE LAYER ON HOVER      
+
+    //DESCRIPTION OF CULTURE LAYER ON HOVER
     $(function () {
         $('#layer_cu').hover(function () {
             var description = "Culture"
@@ -731,8 +731,8 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
-    //DESCRIPTION OF POPULATION LAYER ON HOVER      
+
+    //DESCRIPTION OF POPULATION LAYER ON HOVER
     $(function () {
         $('#layer_po').hover(function () {
             var description = "Population"
@@ -742,14 +742,14 @@ $(document).ready(function() {
             });
         });
 
-       
+
 ////////////////////////////////////////////////////
                     //CULTURE STYLE FUNCTIONS//
 ////////////////////////////////////////////////////
-          
-        
-        
-        
+
+
+
+
 ////////////////////////////////////////////////////
                     //CONFLICT STYLE FUNCTIONS//
 ////////////////////////////////////////////////////
@@ -766,7 +766,7 @@ $(document).ready(function() {
         }
 
     // Handle pointer
-    
+
     map.on('pointermove', function(event) {
         unselectPreviousFeatures();
         map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
@@ -777,80 +777,79 @@ $(document).ready(function() {
             selectedFeatures.push(feature);
             });
         });
-        
+
     });
 */
 ////////////////////////////////////////////////////
                     //CHLOROPLETH FUNCTIONS//
 ////////////////////////////////////////////////////
 
-/*
 
-//STYLE FUNCTION FOR CONFLICT
-var conflictworldStyle = function (feature) {
-    var defaultStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: '#D8DAD9',
-            }),
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 0.5
-            })
-        });
-        
-    var veryhighStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: '#48956E',
-            }),
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 0.5
-            })
-        });
-    var highStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: '#97B39E',
-            }),
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 0.5
-            })
-        });
-    var mediumStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: '#020100',
-            }),
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 0.5
-            })
-        });
-    var lowStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: '#D97936',
-            }),
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 0.5
-            })
-        });
-    var verylowStyle = new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: '#C53E59',
-            }),
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 0.5
-            })
-        });
 
-    var getIndex = feature.get("peace_test");
+    //STYLE FUNCTION FOR CONFLICT
+    var conflictworldStyle = (function () {
+        var defaultStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D8DAD9',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
 
-    var peaceIndex = parseInt(getIndex);
-    peaceIndex.toFixed(2);
-    return function(feature, resolution) {
-        if (peaceIndex >= 1.0 && peaceIndex < 1.5) {
-            return veryhighStyle;
+        var veryhighStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#48956E',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var highStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#97B39E',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var mediumStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#020100',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var lowStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D97936',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var verylowStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#C53E59',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+
+        return function(feature, resolution) {
+            var getIndex = feature.get("peace_test");
+            var peaceIndex = parseInt(getIndex);
+            peaceIndex.toFixed(2);
+            if (peaceIndex >= 1.0 && peaceIndex < 1.5) {
+                return veryhighStyle;
             } else if (peaceIndex >= 1.5 && peaceIndex < 2.0) {
                 return highStyle;
             } else if (peaceIndex >= 2.0 && peaceIndex < 2.5) {
@@ -861,9 +860,9 @@ var conflictworldStyle = function (feature) {
                 return verylowStyle;
             } else {
                 return defaultStyle;
-                }
-            };
-        }
-worldLayer.setStyle(conflictworldStyle);
-*/
+            }
+        };
+    })();
+
+    worldLayer.setStyle(conflictworldStyle);
     });
