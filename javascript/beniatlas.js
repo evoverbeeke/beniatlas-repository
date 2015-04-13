@@ -586,17 +586,6 @@ $(document).ready(function() {
             });
         });
 
-    //CHANGE VIEW TO WORLD ON CLICK
-    $('#place_world').on('click', function() {
-        var circle = $('#circle');
-        circle.css('fill', '#D8DAD9');
-        drcLayer.setStyle(outlineStyle);
-        map.setView(world);
-        map.setLayerGroup(group_world);
-        map.addInteraction(selectPointerMove);
-        map.addInteraction(selectInteraction);
-        });
-
     //DESCRIPTION OF WORLD ON HOVER
     $(function () {
         $('#place_world').hover(function () {
@@ -605,14 +594,6 @@ $(document).ready(function() {
             }, function () {
                 $('#place').empty();
             });
-        });
-
-    //CHANGE VIEW TO DRC ON CLICK
-    $('#place_drc').on('click', function() {
-        drcLayer.setStyle(greyStyle);
-        nkivuLayer.setStyle(outlineStyle);
-        map.setView(drc);
-        map.setLayerGroup(group_drc);
         });
         
     //DESCRIPTION OF DRC ON HOVER      
@@ -808,6 +789,8 @@ $(document).ready(function() {
     $('#place_world').on('click', function() {
         map.setView(world);
         map.setLayerGroup(group_world);
+        map.addInteraction(selectPointerMove);
+        map.addInteraction(selectInteraction);
         ('#place_world') = true;
         ('#place_world').siblings() = false;
         if ((('#place_world') && ('#layer_co')) = true) {
@@ -820,6 +803,8 @@ $(document).ready(function() {
     $('#place_drc').on('click', function() {
         map.setView(drc);
         map.setLayerGroup(group_drc);
+        map.addInteraction(selectPointerMove);
+        map.addInteraction(selectInteraction);
         ('#place_drc') = true;
         ('#place_drc').siblings() = false;
         if ((('#place_drc') && ('#layer_co')) = true) {
