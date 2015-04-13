@@ -1,29 +1,4 @@
 ////////////////////////////////////////////////////
-                    //BUTTONS//
-////////////////////////////////////////////////////
-
-var method_aggregate = document.getElementById('method_aggregate');
-var method_collect = document.getElementById('method_collect');
-var method_network = document.getElementById('method_network');
-var method_play = document.getElementById('method_play');
-
-var place_world = document.getElementById('place_world');
-var place_drc = document.getElementById('place_drc');
-var place_northkivu = document.getElementById('place_northkivu');
-var place_beniregion = document.getElementById('place_beniregion');
-var place_benicity = document.getElementById('place_benicity');
-var place_quarters = document.getElementById('place_quarters');
-
-var layer_in = document.getElementById('layer_in');
-var layer_fo = document.getElementById('layer_fo');
-var layer_ag = document.getElementById('layer_ag');
-var layer_mi = document.getElementById('layer_mi');
-var layer_co = document.getElementById('layer_co');
-var layer_ai = document.getElementById('layer_ai');
-var layer_cu = document.getElementById('layer_cu');
-var layer_po = document.getElementById('layer_po');
-
-////////////////////////////////////////////////////
                     //VIEWS//
 ////////////////////////////////////////////////////
 
@@ -246,18 +221,88 @@ var selectedTextStyleFunction = function(name) {
         });
     };
 
-//FILL STYLE CONFLICT
-var getIndex = function(feature) {
-    return feature.attributes["peace2013"];
-    };
 
+////////////////////////////////////////////////////
+                    //CHLOROPLETH FUNCTION//
+////////////////////////////////////////////////////
 
-//parse number that is pulled from feature
-var peaceIndex = parseInt($('getIndex').val());
+    //STYLE FUNCTION FOR CONFLICT
+    var world_coStyle = (function () {
+        var defaultStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D8DAD9',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
 
-//devide index number by for to get number between 0 and 1
-var graduateOpacity = peaceIndex / 4
+        var veryhighStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#48956E',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var highStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#97B39E',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var mediumStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#020100',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var lowStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D97936',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
+        var verylowStyle = new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#C53E59',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            });
 
+        return function(feature, resolution) {
+            var getIndex = feature.get("peace_test");
+            var peaceIndex = parseInt(getIndex);
+            peaceIndex.toFixed(2);
+            if (peaceIndex >= 1.0 && peaceIndex < 1.5) {
+                return veryhighStyle;
+            } else if (peaceIndex >= 1.5 && peaceIndex < 2.0) {
+                return highStyle;
+            } else if (peaceIndex >= 2.0 && peaceIndex < 2.5) {
+                return mediumStyle;
+            } else if (peaceIndex >= 2.5 && peaceIndex < 3.0) {
+                return lowStyle;
+            } else if (peaceIndex > 3.0) {
+                return verylowStyle;
+            } else {
+                return defaultStyle;
+            }
+        };
+    });
 
 
 ////////////////////////////////////////////////////
@@ -335,6 +380,12 @@ var roads_primaryLayer = new ol.layer.Vector({
         })
     });
 
+// conflict world layer
+var world_coLayer = new ol.layer.Vector({
+    source: worldSource,
+    style: world_coStyle
+    });
+
 // conflict drc layer
 var drc_coLayer = new ol.layer.Vector({
     source: drc_coSource,
@@ -372,17 +423,14 @@ var group_beniregion = new ol.layer.Group({
 var group_benicity = new ol.layer.Group({
     layers: [roadsLayer, roads2Layer, roads_primaryLayer]
     });
+    
+var drc_coGroup = new ol.layer.Group({
+    layers: [drc_coLayer]
+    });
 
 ////////////////////////////////////////////////////
                     //INTERACTIONS//
 ////////////////////////////////////////////////////
-
-
-
-
-
-
-
 
 //change to red when click
 var selectInteraction = new ol.interaction.Select({
@@ -566,8 +614,8 @@ $(document).ready(function() {
         map.setView(drc);
         map.setLayerGroup(group_drc);
         });
-
-    //DESCRIPTION OF DRC ON HOVER
+        
+    //DESCRIPTION OF DRC ON HOVER      
     $(function () {
         $('#place_drc').hover(function () {
             var description = "Democratic Republic of Congo"
@@ -690,12 +738,21 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
+        
 
     //ADD CONFLICT LAYER ON CLICK
     $('#layer_co').on('click', function() {
-        map.addLayer(drc_coLayer);
+        if ($(this).attr("id") == "layer_co") {
+            if ($(this).src == "_off") {
+                this.src = this.src.replace("_off","_on");
+                map.addLayer(drc_coLayer);
+            } else {
+                this.src = this.src.replace("_on","_off");
+                map.removeLayer(drc_coLayer);
+                };
+            };
+        $(this).toggleClass("on");
         });
-
 
     //DESCRIPTION OF CONFLICT LAYER ON HOVER
     $(function () {
@@ -717,7 +774,7 @@ $(document).ready(function() {
             });
         });
 
-    //ADD CONFLICT LAYER ON CLICK
+    //ADD CULTURE LAYER ON CLICK
     $('#layer_cu').on('click', function() {
         map.addLayer(beni_c_cuLayer);
         });
@@ -743,12 +800,49 @@ $(document).ready(function() {
         });
 
 
+
 ////////////////////////////////////////////////////
-                    //CULTURE STYLE FUNCTIONS//
+                    //BUTTON LOGIC//
 ////////////////////////////////////////////////////
 
+    $('#place_world').on('click', function() {
+        map.setView(world);
+        map.setLayerGroup(group_world);
+        ('#place_world') = true;
+        ('#place_world').siblings() = false;
+        if ((('#place_world') && ('#layer_co')) = true) {
+            map.addLayer(world_coLayer);
+            } else {
+            map.removeLayer(world_coLayer);
+            }
+        });
+        
+    $('#place_drc').on('click', function() {
+        map.setView(drc);
+        map.setLayerGroup(group_drc);
+        ('#place_drc') = true;
+        ('#place_drc').siblings() = false;
+        if ((('#place_drc') && ('#layer_co')) = true) {
+            map.addLayer(drc_coLayer);
+            } else {
+            map.removeLayer(drc_coLayer);
+            }
+        });
+        
+    $('#layer_co').on('click', function() {
+        ('#layer_co') = true;
+        ('#layer_co').siblings() = false;
+        if ((('#layer_co') && ('#place_world')) = true) {
+            map.addLayer(world_coLayer);
+            map.removeLayer(drc_coLayer);
+            } 
+        else if ((('#layer_co') && ('#place_drc')) = true) {
+            map.removeLayer(world_coLayer);
+            map.addLayer(drc_coLayer);
+            }
+        });
 
-
+    })();
 
 ////////////////////////////////////////////////////
                     //CONFLICT STYLE FUNCTIONS//
@@ -780,89 +874,12 @@ $(document).ready(function() {
 
     });
 */
-////////////////////////////////////////////////////
-                    //CHLOROPLETH FUNCTIONS//
-////////////////////////////////////////////////////
 
 
 
-    //STYLE FUNCTION FOR CONFLICT
-    var conflictworldStyle = (function () {
-        var defaultStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#D8DAD9',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
 
-        var veryhighStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#48956E',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var highStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#97B39E',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var mediumStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#020100',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var lowStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#D97936',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var verylowStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#C53E59',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
 
-        return function(feature, resolution) {
-            var getIndex = feature.get("peace_test");
-            var peaceIndex = parseInt(getIndex);
-            peaceIndex.toFixed(2);
-            if (peaceIndex >= 1.0 && peaceIndex < 1.5) {
-                return veryhighStyle;
-            } else if (peaceIndex >= 1.5 && peaceIndex < 2.0) {
-                return highStyle;
-            } else if (peaceIndex >= 2.0 && peaceIndex < 2.5) {
-                return mediumStyle;
-            } else if (peaceIndex >= 2.5 && peaceIndex < 3.0) {
-                return lowStyle;
-            } else if (peaceIndex > 3.0) {
-                return verylowStyle;
-            } else {
-                return defaultStyle;
-            }
-        };
-    })();
 
-    worldLayer.setStyle(conflictworldStyle);
-    });
+
+
+
