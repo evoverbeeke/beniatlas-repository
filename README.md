@@ -1,4 +1,4 @@
-# beniatlas-respository
+# beniatlas-repository
 
 BeniAtlas is a project to create a digital mapping framework for the city of Beni in the Democratic Republic
 of Congo. The goal is to design a phased program that meets the needs of the community and the university that is 
