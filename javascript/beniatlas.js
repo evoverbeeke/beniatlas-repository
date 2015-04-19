@@ -423,7 +423,7 @@ var group_beniregion = new ol.layer.Group({
 var group_benicity = new ol.layer.Group({
     layers: [roadsLayer, roads2Layer, roads_primaryLayer]
     });
-    
+
 var drc_coGroup = new ol.layer.Group({
     layers: [drc_coLayer]
     });
@@ -595,8 +595,8 @@ $(document).ready(function() {
                 $('#place').empty();
             });
         });
-        
-    //DESCRIPTION OF DRC ON HOVER      
+
+    //DESCRIPTION OF DRC ON HOVER
     $(function () {
         $('#place_drc').hover(function () {
             var description = "Democratic Republic of Congo"
@@ -719,7 +719,7 @@ $(document).ready(function() {
                 $('#layer').empty();
             });
         });
-        
+
 
     //ADD CONFLICT LAYER ON CLICK
     $('#layer_co').on('click', function() {
@@ -786,42 +786,51 @@ $(document).ready(function() {
                     //BUTTON LOGIC//
 ////////////////////////////////////////////////////
 
+    $('#map').on('click', function(){
+      var featuresExtent = ol.extent.createEmpty();
+      selectInteraction.getFeatures().forEach(function(feature) {
+        ol.extent.extend(featuresExtent, feature.getGeometry().getExtent());
+      });
+      map.getView().fitExtent(featuresExtent, map.getSize());
+    });
+
+
     $('#place_world').on('click', function() {
         map.setView(world);
         map.setLayerGroup(group_world);
         map.addInteraction(selectPointerMove);
         map.addInteraction(selectInteraction);
-        ('#place_world') = true;
-        ('#place_world').siblings() = false;
-        if ((('#place_world') && ('#layer_co')) = true) {
-            map.addLayer(world_coLayer);
-            } else {
-            map.removeLayer(world_coLayer);
-            }
+        // ('#place_world') = true;
+        // ('#place_world').siblings() = false;
+        // if ((('#place_world') && ('#layer_co')) == true) {
+        //     map.addLayer(world_coLayer);
+        //     } else {
+        //     map.removeLayer(world_coLayer);
+        //     }
         });
-        
+
     $('#place_drc').on('click', function() {
         map.setView(drc);
         map.setLayerGroup(group_drc);
         map.addInteraction(selectPointerMove);
         map.addInteraction(selectInteraction);
-        ('#place_drc') = true;
-        ('#place_drc').siblings() = false;
-        if ((('#place_drc') && ('#layer_co')) = true) {
+        // ('#place_drc') = true;
+        // ('#place_drc').siblings() = false;
+        if ((('#place_drc') && ('#layer_co')) == true) {
             map.addLayer(drc_coLayer);
             } else {
             map.removeLayer(drc_coLayer);
             }
         });
-        
+
     $('#layer_co').on('click', function() {
-        ('#layer_co') = true;
-        ('#layer_co').siblings() = false;
-        if ((('#layer_co') && ('#place_world')) = true) {
+        // ('#layer_co') = true;
+        // ('#layer_co').siblings() = false;
+        if ((('#layer_co') && ('#place_world')) == true) {
             map.addLayer(world_coLayer);
             map.removeLayer(drc_coLayer);
-            } 
-        else if ((('#layer_co') && ('#place_drc')) = true) {
+            }
+        else if ((('#layer_co') && ('#place_drc')) == true) {
             map.removeLayer(world_coLayer);
             map.addLayer(drc_coLayer);
             }
