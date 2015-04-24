@@ -2,6 +2,15 @@
 	GENERAL
 \*------------------------------------*/   
 
+body {
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: #333333;
+    font-size: 75%;
+    background: white;
+    color: #666;
+    }
+
 #map { 
     height: 500px; 
     width: 700px; 
@@ -11,15 +20,67 @@
     left: 0px; 
     z-index: -1; 
     }
-            
-body {
-    padding: 0;
-    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-    color: #333333;
-    font-size: 75%;
-    background: white;
-    color: #666;
+    
+#legend { 
+    width:120px;
+    height: auto;
+    position: absolute;
+    margin-left: 60px;
+    top:500px;
+    background-color: white;
+    z-index: 5;
+    padding: 4px;
+    display: none;
     }
+    
+#contribute { 
+    position:absolute;
+    top: 300px;
+    left:900px;
+    }
+    
+#info { 
+    position:absolute;
+    top: 320px;
+    left:900px;
+    }
+    
+#chart { 
+    position:absolute;
+    top: 700px;
+    left:30px;
+    }
+    
+/*------------------------------------*\
+	BUTTONS
+\*------------------------------------*/   
+    
+#infocolumn {
+    width: 300px;
+    height: auto;
+    background-color: white;
+    top: 200px;
+    left: 700px;
+    }
+    
+.method_group {
+    left: 10px
+    }
+    
+.place_group {
+    left: 10px
+    }
+    
+.layer_group {
+    left:10px
+    }
+    
+.button {
+    float:left;
+    }
+    
+    
+    
     
 /*------------------------------------*\
 	CONTROLS
@@ -32,31 +93,10 @@ img.northarrow {
     z-index:2;
     }
            
-.legend { 
-    width:120px;
-    height: auto;
-    position: absolute;
-    margin-left: 60px;
+#menu {
     top:500px;
-    background-color: white;
-    z-index: 5;
-    }
-    
-.menu {
-    border-radius:4px;
-    height:30px;
-    width:30px;
-    border-style: solid;
-    border-width:2px;
-    border-color: black;
-    background-color: white;
-    top:500px;
-    left:30px;
+    left:28px;
     position: absolute;
-    text-align:center;
-    padding:0;
-    margin:1px;
-    line-height:.4em;
     }
     
 /*------------------------------------*\

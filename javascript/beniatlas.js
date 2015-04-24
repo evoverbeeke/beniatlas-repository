@@ -1,3 +1,14 @@
+var legend;
+
+var beni_c_inLegend = [
+    'Roads',
+    'Public Fountains',
+    'Bridges'
+].join('<br />');
+
+
+
+
 ////////////////////////////////////////////////////
                     //VIEWS//
 ////////////////////////////////////////////////////
@@ -6,32 +17,48 @@ var world = new ol.View({//WORLD VIEW
     projection: 'EPSG:4326',
     center: [0, 0],
     zoom: 1.5,
-    minZoom: 1,
-    maxZoom: 3
+    minZoom: 1.5,
+    maxZoom: 1.5
     });
 
 var drc = new ol.View({//DRC VIEW
     projection: 'EPSG:4326',
     center: [23.65, -3.02],
-    zoom: 5
+    zoom: 5,
+    minZoom: 5,
+    maxZoom: 5
     });
 
-var northkivu = new ol.View({//NORTH KIVU VIEW
+var nkivu = new ol.View({//NORTH KIVU VIEW
     projection: 'EPSG:4326',
     center: [28.69, -0.60],
-    zoom: 7.4
+    zoom: 7.4,
+    minZoom: 7.4,
+    maxZoom: 7.4
     });
 
-var beniregion = new ol.View({//BENI REGION VIEW
+var beni_r = new ol.View({//BENI REGION VIEW
     projection: 'EPSG:4326',
     center: [29.53, 0.42],
-    zoom: 9
+    zoom: 9,
+    minZoom: 9,
+    maxZoom: 9
     });
 
-var benicity = new ol.View({//BENI CITY VIEW
+var beni_c = new ol.View({//BENI CITY VIEW
     projection: 'EPSG:4326',
     center: [29.46, 0.50],
-    zoom: 13
+    zoom: 13,
+    minZoom: 13,
+    maxZoom: 13
+    });
+    
+var beni_q = new ol.View({//BENI CITY VIEW
+    projection: 'EPSG:4326',
+    center: [29.46, 0.50],
+    zoom: 13,
+    minZoom: 13,
+    maxZoom: 16
     });
 
 ////////////////////////////////////////////////////
@@ -39,7 +66,7 @@ var benicity = new ol.View({//BENI CITY VIEW
 ////////////////////////////////////////////////////
 
 var worldSource = new ol.source.GeoJSON({//WORLD ADMIN SOURCE
-    url: 'data/admin_world_test.geojson',
+    url: 'data/admin_world.geojson',
     projection: 'EPSG:4326'
     });
 
@@ -54,17 +81,17 @@ var drcdivSource = new ol.source.GeoJSON({//DRC DIVIDED ADMIN SOURCE
     });
 
 var nkivuSource = new ol.source.GeoJSON({//NORTH KIVU ADMIN SOURCE
-    url: 'data/admin_northkivu.geojson',
+    url: 'data/admin_nkivu.geojson',
     projection: 'EPSG:4326'
     });
 
 var nkivudivSource = new ol.source.GeoJSON({//NORTH KIVU DIVIDED ADMIN SOURCE
-    url: 'data/admin_northkivu_div.geojson',
+    url: 'data/admin_nkivu_div.geojson',
     projection: 'EPSG:4326'
     });
 
 var beni_rSource = new ol.source.GeoJSON({//BENI REGION ADMIN SOURCE
-    url: 'data/admin_beniregion.geojson',
+    url: 'data/admin_beni_r.geojson',
     projection: 'EPSG:4326'
     });
 
@@ -74,7 +101,7 @@ var beni_c_quartiersSource = new ol.source.GeoJSON({//BENI QUARTIER BOUNDARIES S
     });
 
 var beni_c_roadsSource = new ol.source.GeoJSON({//BENI ROADS SOURCE
-    url: 'data/roads.json',
+    url: 'data/roads_test.geojson',
     projection: 'EPSG:4326'
     });
 
@@ -84,7 +111,12 @@ var beni_c_roadspSource = new ol.source.GeoJSON({//BENI PRIMARY ROADS SOURCE
     });
 
 var drc_coSource = new ol.source.GeoJSON({//DRC CONFLICT SOURCE
-    url: 'data/conflict_test.geojson',
+    url: 'data/conflict.geojson',
+    projection: 'EPSG:4326'
+    });
+    
+var drc_cuSource = new ol.source.GeoJSON({//DRC CONFLICT SOURCE
+    url: 'data/culture_drc.geojson',
     projection: 'EPSG:4326'
     });
 
@@ -140,6 +172,14 @@ var drc_coStyle = new ol.style.Style({
         })
     });
 
+//culture drc style
+var drc_cuStyle = new ol.style.Style({
+    stroke: new ol.style.Stroke({
+        color: '#F062A4',
+        width: 1
+        })
+    });
+
 //POINT STYLE CULTURE
 var beni_c_cuStyle = new ol.style.Style({
     image: new ol.style.Circle({
@@ -188,14 +228,14 @@ var quartiertextStyleFunction = function(feature, resolution) {
                 color: 'black'
                 }),
             stroke: new ol.style.Stroke({
-                color: '#ddd',
-                width: 1
+                color: 'white',
+                width: 1.5
                 })
             }),
         stroke: new ol.style.Stroke({
-            color: 'black',
-            width: 1
-            })
+            color: 'red',
+            width: 2
+            }),
         })];
     };
 
@@ -220,89 +260,6 @@ var selectedTextStyleFunction = function(name) {
             })
         });
     };
-
-
-////////////////////////////////////////////////////
-                    //CHLOROPLETH FUNCTION//
-////////////////////////////////////////////////////
-
-    //STYLE FUNCTION FOR CONFLICT
-    var world_coStyle = (function () {
-        var defaultStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#D8DAD9',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-
-        var veryhighStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#48956E',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var highStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#97B39E',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var mediumStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#020100',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var lowStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#D97936',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-        var verylowStyle = new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: '#C53E59',
-                }),
-            stroke: new ol.style.Stroke({
-                color: 'white',
-                width: 0.5
-                })
-            });
-
-        return function(feature, resolution) {
-            var getIndex = feature.get("peace_test");
-            var peaceIndex = parseInt(getIndex);
-            peaceIndex.toFixed(2);
-            if (peaceIndex >= 1.0 && peaceIndex < 1.5) {
-                return veryhighStyle;
-            } else if (peaceIndex >= 1.5 && peaceIndex < 2.0) {
-                return highStyle;
-            } else if (peaceIndex >= 2.0 && peaceIndex < 2.5) {
-                return mediumStyle;
-            } else if (peaceIndex >= 2.5 && peaceIndex < 3.0) {
-                return lowStyle;
-            } else if (peaceIndex > 3.0) {
-                return verylowStyle;
-            } else {
-                return defaultStyle;
-            }
-        };
-    });
 
 
 ////////////////////////////////////////////////////
@@ -342,7 +299,7 @@ var beni_rLayer = new ol.layer.Vector({//BENIREGION ADMIN LAYER
 //ADMINISTRATIVE BENI POINT LAYER
 
 //quartier boundaries layer
-var beni_c_quartiersLayer = new ol.layer.Vector({
+var beni_qLayer = new ol.layer.Vector({
     source: beni_c_quartiersSource,
     style: quartiertextStyleFunction
     });
@@ -350,23 +307,107 @@ var beni_c_quartiersLayer = new ol.layer.Vector({
 //roads layer
 var roadsLayer = new ol.layer.Vector({
     source: beni_c_roadsSource,
-    style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: 'grey',
-            width: 2
-            })
-        })
+    style: (function() {
+        var route_principale = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'black',
+                width: 6
+                })
+            })];            
+        var route_secondaire = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'grey',
+                width: 4
+                })
+            })];
+        var route_tertiare = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'grey',
+                width: 2.5
+                })
+            })];
+        var route_sentier = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#D8DAD9',
+                width: 1.5
+                })
+            })];
+        var route_service = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#D8DAD9',
+                width: 2
+                })
+            })];
+        var route_pieton = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#938B6A',
+                width: 1
+                })
+            })];
+        var route_default = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#D8DAD9',
+                width: 1.5
+                })
+            })];
+        return function(feature) {
+            if (feature.get('type') == 'route_principale') {
+                return route_principale;
+            } else if (feature.get('type') == 'route_secondaire') {
+                return route_secondaire;
+            } else if (feature.get('type') == 'route_tertiare') {
+                return route_tertiaire;
+            } else if (feature.get('type') == 'route_sentier') {
+                return route_sentier;
+            } else if (feature.get('type') == 'route_service') {
+                return route_service;
+            } else if (feature.get('type') == 'route_pieton') {
+                return route_pieton;
+            } else {
+                return route_default;
+                } 
+            };  
+        })()
     });
 
-//roads layer white
-var roads2Layer = new ol.layer.Vector({
+  
+//inner roads layer
+var roadsLayer2 = new ol.layer.Vector({
     source: beni_c_roadsSource,
-    style: new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: 'white',
-            width: 1
-            })
-        })
+    style: (function() {
+        var route_principale2 = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 3
+                })
+            })];            
+        var route_secondaire2 = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 1.5
+                })
+            })];
+        var route_tertiare2 = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var route_default2 = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                width: 0
+                })
+            })];
+        return function(feature) {
+            if (feature.get('type') == 'route_principale') {
+                return route_principale2;
+            } else if (feature.get('type') == 'route_secondaire') {
+                return route_secondaire2;
+            } else if (feature.get('type') == 'route_tertiare') {
+                return route_tertiaire2;
+                }
+            };   
+        })()
     });
 
 //primary roads layer
@@ -379,12 +420,49 @@ var roads_primaryLayer = new ol.layer.Vector({
             })
         })
     });
-
-// conflict world layer
-var world_coLayer = new ol.layer.Vector({
-    source: worldSource,
-    style: world_coStyle
+    
+//roads infrastructure layer
+var beni_c_inLayer = new ol.layer.Vector({
+    source: beni_c_roadsSource,
+    style: (function() {
+        var condition_bonne = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'blue',
+                width: 2
+                })
+            })];            
+        var condition_mediocre = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'yellow',
+                width: 2
+                })
+            })];
+        var condition_mauvaise = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'red',
+                width: 2
+                })
+            })];
+        var condition_default = [new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#D8DAD9',
+                width: 1
+                })
+            })];
+        return function(feature) {
+            if (feature.get('condition') == 'condition_bonne') {
+                return condition_bonne;
+            } else if (feature.get('condition') == 'condition_mediocre') {
+                return condition_mediocre;
+            } else if (feature.get('condition') == 'condition_mauvaise') {
+                return condition_mauvaise;
+            } else {
+                return condition_default;
+                }
+            };   
+        })()
     });
+
 
 // conflict drc layer
 var drc_coLayer = new ol.layer.Vector({
@@ -392,41 +470,244 @@ var drc_coLayer = new ol.layer.Vector({
     style: drc_coStyle
     });
 
+// conflict world layer
+var world_coLayer = new ol.layer.Vector({
+    source: worldSource,
+    style: (function () {
+        var defaultStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D8DAD9',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];            
+        var veryhighStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D1D1D1',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var highStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#A8A8A8',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var mediumStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#7F7F7F',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var lowStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#565656',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var verylowStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#2D2D2D',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        return function(feature) {
+            if (feature.get('p2013rate') == 'veryhigh') {
+                return veryhighStyle;
+            } else if (feature.get('p2013rate') == 'high') {
+                return highStyle;
+            } else if (feature.get('p2013rate') == 'medium') {
+                return mediumStyle;
+            } else if (feature.get('p2013rate') == 'low') {
+                return lowStyle;
+            } else if (feature.get('p2013rate') == 'verylow') {
+                return verylowStyle;
+            } else {
+                return defaultStyle;
+                }
+            };
+        })()
+    });
+
+// culture world layer
+var world_cuLayer = new ol.layer.Vector({
+    source: worldSource,
+    style: (function () {
+        var defaultStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D8DAD9',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];            
+        var veryhighStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#AC1283',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var highStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#D53491',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var mediumStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#F768A1',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var lowStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#F99AB1',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        var verylowStyle = [new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: '#FCC6C6',
+                }),
+            stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 0.5
+                })
+            })];
+        return function(feature) {
+            if (feature.get('cu_rating') == 'veryhigh') {
+                return veryhighStyle;
+            } else if (feature.get('cu_rating') == 'high') {
+                return highStyle;
+            } else if (feature.get('cu_rating') == 'medium') {
+                return mediumStyle;
+            } else if (feature.get('cu_rating') == 'low') {
+                return lowStyle;
+            } else if (feature.get('cu_rating') == 'verylow') {
+                return verylowStyle;
+            } else {
+                return defaultStyle;
+                }
+            };
+        })()
+    });
+    
+// culture drc layer
+var drc_cuLayer = new ol.layer.Vector({
+    source: drc_cuSource,
+    style: drc_cuStyle
+    });
+ 
+/*       
 // culture benicity layer
 var beni_c_cuLayer = new ol.layer.Vector({
     source: beni_c_cuSource,
     style: beni_c_cuStyle
     });
-
+*/
 
 
 ////////////////////////////////////////////////////
                     //LAYER GROUPS//
 ////////////////////////////////////////////////////
 
-var group_world = new ol.layer.Group({
+var worldGroup = new ol.layer.Group({
     layers: [worldLayer, drcLayer]
     });
 
-var group_drc = new ol.layer.Group({
+var drcGroup = new ol.layer.Group({
     layers: [drcdivLayer, nkivuLayer]
     });
 
-var group_northkivu = new ol.layer.Group({
+var nkivuGroup = new ol.layer.Group({
     layers: [nkivudivLayer, beni_rLayer]
     });
 
-var group_beniregion = new ol.layer.Group({
+var beni_rGroup = new ol.layer.Group({
     layers: [beni_rLayer]
     });
 
-var group_benicity = new ol.layer.Group({
-    layers: [roadsLayer, roads2Layer, roads_primaryLayer]
+var beni_cGroup = new ol.layer.Group({
+    layers: [roadsLayer, roadsLayer2]
+    });
+    
+var beni_qGroup = new ol.layer.Group({
+    layers: [roadsLayer, roadsLayer2, beni_qLayer]
+    });
+    
+var beni_c_inGroup = new ol.layer.Group({
+    layers: [beni_c_inLayer]
+    });
+    
+var world_coGroup = new ol.layer.Group({
+    layers: [world_coLayer, drcLayer]
+    });
+    
+var world_cuGroup = new ol.layer.Group({
+    layers: [world_cuLayer, drcLayer]
     });
     
 var drc_coGroup = new ol.layer.Group({
-    layers: [drc_coLayer]
+    layers: [drcdivLayer, drc_coLayer, nkivuLayer]
     });
+    
+var drc_cuGroup = new ol.layer.Group({
+    layers: [drcdivLayer, drc_cuLayer, nkivuLayer]
+    });
+
+////////////////////////////////////////////////////
+                    //FEATURE OVERLAYS//
+////////////////////////////////////////////////////
+
+//feature overlay for drawn cultural elements
+var featureOverlay = new ol.FeatureOverlay({
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(240,98,163,0.2)'
+            }),
+        stroke: new ol.style.Stroke({
+            color: '#F062A4',
+            width: 2
+            }),
+        image: new ol.style.Circle({
+            radius: 5,
+            fill: new ol.style.Fill({
+                color: '#F062A4'
+                })
+            })
+        })
+    });
+
 
 ////////////////////////////////////////////////////
                     //INTERACTIONS//
@@ -434,7 +715,7 @@ var drc_coGroup = new ol.layer.Group({
 
 //change to red when click
 var selectInteraction = new ol.interaction.Select({
-    layers: [beni_c_quartiersLayer, drcLayer, nkivuLayer],
+    layers: [beni_qLayer, drcLayer, nkivuLayer],
     style: new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'blue',
@@ -443,12 +724,12 @@ var selectInteraction = new ol.interaction.Select({
         fill: new ol.style.Fill({
             color: 'rgba(0,0,255,0.1)',
             })
-        })
+        }),
     });
 
 //change to blue when hover
 var selectPointerMove = new ol.interaction.Select({
-    layers: [beni_c_quartiersLayer, drcLayer, nkivuLayer],
+    layers: [beni_qLayer, drcLayer, nkivuLayer],
     style: new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: 'red',
@@ -458,11 +739,24 @@ var selectPointerMove = new ol.interaction.Select({
             color: 'rgba(255,0,0,0.1)',
             })
         }),
-    condition: ol.events.condition.pointerMove
+    });
+    
+var modify_cuPoints = new ol.interaction.Modify({
+    features: featureOverlay.getFeatures(),
+    //the SHIFT key must be pressed to delete vertises so that the new vertises can be drawn at the same position of existing vertices
+    deleteCondition: function(event) {
+        return ol.events.condition.shiftKeyOnly(event) &&
+            ol.events.condition.singleClick(event);
+        }
     });
 
+var draw_cuPoints = new ol.interaction.Draw({
+    type: 'Point',
+    features: featureOverlay.getFeatures()
+    });
 
-
+    
+/*
 //ZOOM TO EXTENTS
 var zoomExtents = function(feature) {
     return feature;
@@ -483,7 +777,7 @@ var zoomExtents = function(feature) {
     map.setView().calculateExtent(extent, map.getSize());
     };
 
-
+*/
 
 
 ////////////////////////////////////////////////////
@@ -491,47 +785,149 @@ var zoomExtents = function(feature) {
 ////////////////////////////////////////////////////
 
 $(document).ready(function() {
+    
+    map.addEventListener('click', function() {
+        var featuresExtent = ol.extent.createEmpty();
+        selectInteraction.getFeatures().forEach(function(feature) {
+            ol.extent.extend(featuresExtent, feature.getGeometry().getExtent());
+        });
+        map.getView().fitExtent(featuresExtent, map.getSize());
+    });
 
-    //IMAGE SWAP FOR ICONS
-    /*$(".img-swap").live('click', function() {
-        if ($(this).attr("class") == "img-swap") {
-            this.src = this.src.replace("_off","_on");
-        } else {
-            this.src = this.src.replace("_on","_off");
-        }
-        $(this).toggleClass("on");
-        });*/
-
+/*
     //SHOW ONLY ICONS APPLICABLE TO AGGREGATE METHOD
-    $('#method_aggregate').on('click', function() {
         $('#place_world').show();
         $('#place_drc').show();
         $('#place_northkivu').show();
         $('#place_beniregion').show();
         $('#place_benicity').show();
         $('#place_quarters').show();
+        $('#layer_in').hide();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
         $('#layer_co').show();
-        });
-
-    //DESCRIPTION OF AGGREGATE METHOD ON HOVER
-
-    $('#method_aggregate').hover(function () {
-        var description = "Look at maps from different sources"
-        $('#method').html(description);
-        }, function () {
-            $('#method').empty();
-        });
-
+        $('#layer_ai').hide();
+        $('#layer_cu').show();
+        $('#layer_po').hide();
 
     //SHOW ONLY ICONS APPLICABLE TO COLLECT METHOD
-    $('#method_collect').on('click', function() {
         $('#place_world').hide();
         $('#place_drc').hide();
         $('#place_northkivu').hide();
         $('#place_beniregion').hide();
         $('#place_benicity').show();
         $('#place_quarters').show();
+        $('#layer_in').show();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
         $('#layer_co').hide();
+        $('#layer_ai').hide();
+        $('#layer_cu').show();
+        $('#layer_po').hide();
+
+    //SHOW ONLY ICONS APPLICABLE TO PLAY METHOD
+        $('#place_world').hide();
+        $('#place_drc').hide();
+        $('#place_northkivu').show();
+        $('#place_beniregion').show();
+        $('#place_benicity').hide();
+        $('#place_quarters').hide();
+        $('#layer_in').hide();
+        $('#layer_fo').show();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').hide();
+        $('#layer_ai').hide();
+        $('#layer_cu').hide();
+        $('#layer_po').hide();
+
+        //show and hide icons
+        $('#method_aggregate').show();
+        $('#method_collect').hide();
+        $('#method_play').hide();
+        $('#layer_in').hide();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').show();
+        $('#layer_ai').hide();
+        $('#layer_cu').show();
+        $('#layer_po').hide();
+        
+        //show and hide icons
+        $('#method_aggregate').show();
+        $('#method_collect').hide();
+        $('#method_play').hide();
+        $('#layer_in').hide();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').show();
+        $('#layer_ai').hide();
+        $('#layer_cu').show();
+        $('#layer_po').hide();
+        
+        //show and hide icons
+        $('#method_aggregate').show();
+        $('#method_collect').hide();
+        $('#method_play').show();
+        $('#layer_in').hide();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').hide();
+        $('#layer_ai').hide();
+        $('#layer_cu').hide();
+        $('#layer_po').hide();
+        
+        //show and hide icons
+        $('#method_aggregate').show();
+        $('#method_collect').hide();
+        $('#method_play').show();
+        $('#layer_in').hide();
+        $('#layer_fo').show();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').hide();
+        $('#layer_ai').hide();
+        $('#layer_cu').hide();
+        $('#layer_po').hide();
+        
+        //show and hide icons
+        $('#method_aggregate').show();
+        $('#method_collect').show();
+        $('#method_play').hide();
+        $('#layer_in').show();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').hide();
+        $('#layer_ai').hide();
+        $('#layer_cu').show();
+        $('#layer_po').hide();
+        
+        //show and hide icons
+        $('#method_aggregate').show();
+        $('#method_collect').show();
+        $('#method_play').hide();
+        $('#layer_in').show();
+        $('#layer_fo').hide();
+        $('#layer_ag').hide();
+        $('#layer_mi').hide();
+        $('#layer_co').hide();
+        $('#layer_ai').hide();
+        $('#layer_cu').show();
+        $('#layer_po').hide();
+        */
+
+    //DESCRIPTION OF AGGREGATE METHOD ON HOVER
+    $('#method_aggregate').hover(function () {
+        var description = "Look at maps from different sources"
+        $('#method').html(description);
+        }, function () {
+            $('#method').empty();
         });
 
     //DESCRIPTION OF COLLECT METHOD ON HOVER
@@ -544,37 +940,6 @@ $(document).ready(function() {
             });
         });
 
-    //SHOW ONLY ICONS APPLICABLE TO NETWORK METHOD
-    $('#method_network').on('click', function() {
-        $('#place_world').hide();
-        $('#place_drc').hide();
-        $('#place_northkivu').hide();
-        $('#place_beniregion').hide();
-        $('#place_benicity').show();
-        $('#place_quarters').show();
-        $('#layer_co').hide();
-        });
-
-    //DESCRIPTION OF NETWORK METHOD ON HOVER
-    $(function () {
-        $('#method_network').hover(function () {
-            var description = "Connect with people"
-            $('#method').html(description);
-            }, function () {
-                $('#method').empty();
-            });
-        });
-
-    //SHOW ONLY ICONS APPLICABLE TO PLAY METHOD
-    $('#method_play').on('click', function() {
-        $('#place_world').hide();
-        $('#place_drc').hide();
-        $('#place_northkivu').hide();
-        $('#place_beniregion').show();
-        $('#place_benicity').hide();
-        $('#place_quarters').show();
-        $('#layer_co').hide();
-        });
 
     //DESCRIPTION OF NETWORK METHOD ON HOVER
     $(function () {
@@ -606,17 +971,9 @@ $(document).ready(function() {
             });
         });
 
-    //CHANGE VIEW TO NORTH KIVU ON CLICK
-    $('#place_northkivu').on('click', function() {
-        nkivuLayer.setStyle(greyStyle);
-        beni_rLayer.setStyle(outline2Style);
-        map.setView(northkivu);
-        map.setLayerGroup(group_northkivu);
-        });
-
     //DESCRIPTION OF NORTH KIVU ON HOVER
     $(function () {
-        $('#place_northkivu').hover(function () {
+        $('#place_nkivu').hover(function () {
             var description = "North Kivu"
             $('#place').html(description);
             }, function () {
@@ -624,16 +981,9 @@ $(document).ready(function() {
             });
         });
 
-    //CHANGE VIEW TO BENI REGION ON CLICK
-    $('#place_beniregion').on('click', function() {
-        beni_rLayer.setStyle(greyStyle);
-        map.setView(beniregion);
-        map.setLayerGroup(group_beniregion);
-        });
-
     //DESCRIPTION OF BENI REGION ON HOVER
     $(function () {
-        $('#place_beniregion').hover(function () {
+        $('#place_beni_r').hover(function () {
             var description = "Beni Region"
             $('#place').html(description);
             },
@@ -642,18 +992,9 @@ $(document).ready(function() {
             });
         });
 
-    //CHANGE VIEW TO BENI CITY ON CLICK
-    $('#place_benicity').on('click', function() {
-        map.setView(benicity);
-        map.setLayerGroup(group_benicity);
-        map.removeLayer(beni_c_quartiersLayer);
-        var description = "Beni"
-        $('#place').html(description);
-        });
-
     //DESCRIPTION OF BENI CITY ON HOVER
     $(function () {
-        $('#place_benicity').hover(function () {
+        $('#place_beni_c').hover(function () {
             var description = "Beni"
             $('#place').html(description);
             }, function () {
@@ -661,18 +1002,9 @@ $(document).ready(function() {
             });
         });
 
-    //SHOW QUARTIER BOUNDARIES
-    $('#place_quarters').on('click', function() {
-        map.setView(benicity);
-        map.setLayerGroup(group_benicity);
-        map.addLayer(beni_c_quartiersLayer);
-        map.addInteraction(selectPointerMove);
-        map.addInteraction(selectInteraction);
-        });
-
     //DESCRIPTION OF BENI CITY ON HOVER
     $(function () {
-        $('#place_quarters').hover(function () {
+        $('#place_beni_q').hover(function () {
             var description = "Neighbourhoods"
             $('#place').html(description);
             }, function () {
@@ -721,20 +1053,6 @@ $(document).ready(function() {
         });
         
 
-    //ADD CONFLICT LAYER ON CLICK
-    $('#layer_co').on('click', function() {
-        if ($(this).attr("id") == "layer_co") {
-            if ($(this).src == "_off") {
-                this.src = this.src.replace("_off","_on");
-                map.addLayer(drc_coLayer);
-            } else {
-                this.src = this.src.replace("_on","_off");
-                map.removeLayer(drc_coLayer);
-                };
-            };
-        $(this).toggleClass("on");
-        });
-
     //DESCRIPTION OF CONFLICT LAYER ON HOVER
     $(function () {
         $('#layer_co').hover(function () {
@@ -753,11 +1071,6 @@ $(document).ready(function() {
             }, function () {
                 $('#layer').empty();
             });
-        });
-
-    //ADD CULTURE LAYER ON CLICK
-    $('#layer_cu').on('click', function() {
-        map.addLayer(beni_c_cuLayer);
         });
 
     //DESCRIPTION OF CULTURE LAYER ON HOVER
@@ -780,59 +1093,283 @@ $(document).ready(function() {
             });
         });
 
-
-
 ////////////////////////////////////////////////////
-                    //BUTTON LOGIC//
+                    //GEOLOCATION//
+//////////////////////////////////////////////////// 
+  
+
+// Geolocation marker
+    var markerEl = document.getElementById('geolocation_marker');
+    var marker = new ol.Overlay({
+        positioning: 'center-center',
+        element: markerEl,
+        stopEvent: false
+        });
+    map.addOverlay(marker);
+
+// LineString to store the different geolocation positions. This LineString
+// is time aware.
+// The Z dimension is actually used to store the rotation (heading).
+    var positions = new ol.geom.LineString([],
+        /** @type {ol.geom.GeometryLayout} */ ('XYZM'));
+
+// Geolocation Control
+    var geolocation = new ol.Geolocation(/** @type {olx.GeolocationOptions} */ ({
+        projection: beni_c.getProjection(),
+        trackingOptions: {
+            maximumAge: 10000,
+            enableHighAccuracy: true,
+            timeout: 600000
+            }
+        }));
+
+    var deltaMean = 500; // the geolocation sampling period mean in ms
+
+// Listen to position changes
+    geolocation.on('change', function(evt) {
+        var position = geolocation.getPosition();
+        var accuracy = geolocation.getAccuracy();
+        var heading = geolocation.getHeading() || 0;
+        var speed = geolocation.getSpeed() || 0;
+        var m = Date.now();
+
+    addPosition(position, heading, m, speed);
+
+    var coords = positions.getCoordinates();
+    var len = coords.length;
+    if (len >= 2) {
+        deltaMean = (coords[len - 1][3] - coords[0][3]) / (len - 1);
+        }
+
+    var html = [
+        'Position: ' + position[0].toFixed(2) + ', ' + position[1].toFixed(2),
+        'Accuracy: ' + accuracy,
+        'Heading: ' + Math.round(radToDeg(heading)) + '&deg;',
+        'Speed: ' + (speed * 3.6).toFixed(1) + ' km/h',
+        'Delta: ' + Math.round(deltaMean) + 'ms'
+    ].join('<br />');
+    document.getElementById('info').innerHTML = html;
+    });
+
+    geolocation.on('error', function() {
+        alert('geolocation error');
+  // FIXME we should remove the coordinates in positions
+});
+
+// convert radians to degrees
+function radToDeg(rad) {
+  return rad * 360 / (Math.PI * 2);
+}
+// convert degrees to radians
+function degToRad(deg) {
+  return deg * Math.PI * 2 / 360;
+}
+// modulo for negative values
+function mod(n) {
+  return ((n % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
+}
+
+    function addPosition(position, heading, m, speed) {
+        var x = position[0];
+        var y = position[1];
+        var fCoords = positions.getCoordinates();
+        var previous = fCoords[fCoords.length - 1];
+        var prevHeading = previous && previous[2];
+        if (prevHeading) {
+            var headingDiff = heading - mod(prevHeading);
+
+        // force the rotation change to be less than 180°
+        if (Math.abs(headingDiff) > Math.PI) {
+            var sign = (headingDiff >= 0) ? 1 : -1;
+            headingDiff = - sign * (2 * Math.PI - Math.abs(headingDiff));
+            }
+        heading = prevHeading + headingDiff;
+        }
+        positions.appendCoordinate([x, y, heading, m]);
+
+    // only keep the 20 last coordinates
+        positions.setCoordinates(positions.getCoordinates().slice(-20));
+
+    // FIXME use speed instead
+        if (heading && speed) {
+            markerEl.src = 'data/geolocation_marker_heading.png';
+        } else {
+            markerEl.src = 'data/geolocation_marker.png';
+        }
+    }
+
+var previousM = 0;
+// change center and rotation before render
+map.beforeRender(function(map, frameState) {
+  if (frameState !== null) {
+    // use sampling period to get a smooth transition
+    var m = frameState.time - deltaMean * 1.5;
+    m = Math.max(m, previousM);
+    previousM = m;
+    // interpolate position along positions LineString
+    var c = positions.getCoordinateAtM(m, true);
+    var view = frameState.viewState;
+    if (c) {
+      view.center = getCenterWithHeading(c, -c[2], view.resolution);
+      view.rotation = -c[2];
+      marker.setPosition(c);
+    }
+  }
+  return true; // Force animation to continue
+});
+
+// recenters the view by putting the given coordinates at 3/4 from the top or
+// the screen
+function getCenterWithHeading(position, rotation, resolution) {
+  var size = map.getSize();
+  var height = size[1];
+
+  return [
+    position[0] - Math.sin(rotation) * height * resolution * 1 / 4,
+    position[1] + Math.cos(rotation) * height * resolution * 1 / 4
+  ];
+}
+
+// postcompose callback
+function render() {
+  map.render();
+}
+
+// geolocate device
+var geolocateBtn = document.getElementById('geolocate');
+geolocateBtn.addEventListener('click', function() {
+    geolocation.setTracking(true); // Start position tracking
+
+  map.on('postcompose', render);
+  map.render();
+
+  disableButtons();
+}, false);
+
+
+function disableButtons() {
+  geolocateBtn.disabled = 'disabled';
+  simulateBtn.disabled = 'disabled';
+}
+  
+  
+  
 ////////////////////////////////////////////////////
+                    //LEGENDS//
+////////////////////////////////////////////////////  
 
-    $('#place_world').on('click', function() {
-        map.setView(world);
-        map.setLayerGroup(group_world);
-        map.addInteraction(selectPointerMove);
-        map.addInteraction(selectInteraction);
-        ('#place_world') = true;
-        ('#place_world').siblings() = false;
-        if ((('#place_world') && ('#layer_co')) = true) {
-            map.addLayer(world_coLayer);
-            } else {
-            map.removeLayer(world_coLayer);
-            }
-        });
-        
-    $('#place_drc').on('click', function() {
-        map.setView(drc);
-        map.setLayerGroup(group_drc);
-        map.addInteraction(selectPointerMove);
-        map.addInteraction(selectInteraction);
-        ('#place_drc') = true;
-        ('#place_drc').siblings() = false;
-        if ((('#place_drc') && ('#layer_co')) = true) {
-            map.addLayer(drc_coLayer);
-            } else {
-            map.removeLayer(drc_coLayer);
-            }
-        });
-        
-    $('#layer_co').on('click', function() {
-        ('#layer_co') = true;
-        ('#layer_co').siblings() = false;
-        if ((('#layer_co') && ('#place_world')) = true) {
-            map.addLayer(world_coLayer);
-            map.removeLayer(drc_coLayer);
-            } 
-        else if ((('#layer_co') && ('#place_drc')) = true) {
-            map.removeLayer(world_coLayer);
-            map.addLayer(drc_coLayer);
+  
+  
+    $('#menu').on('click', function () {
+        if (menu !== 'on') {
+            $('#legend').show();
+            menu = 'on'
+        } else {
+            $('#legend').hide();
             }
         });
 
-    })();
+    var noneLegend;  
+
+    var beni_cLegend = [
+        'Health Facilities',
+        'Schools',
+        'Commerce',
+        'Industry'
+    ].join('<br />');
+    
+    var beni_c_inLegend = [
+        'Roads',
+        'Public Fountains',
+        'Bridges'
+    ].join('<br />');
+    
+    document.getElementById('legend').innerHTML = beni_cLegend; 
+  
+    });
+    
+     
+       
+/*
+var beni_cLegend = "<ul><li>Primary Roads</li><li>Secondary Roads</li><li>Tertiary Roads</li><li>Residential Roads</li><li>"
+
+
+
+a id='draw' href='#'>draw</a>"
+    $('.legend').html(description);
+        
+        
+var highlight;
+
+
+var featureLegend = function(pixel) {
+
+  var feature = map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+    return feature;
+  });
+
+  var info = document.getElementById('info');
+  if (feature) {
+    info.innerHTML = feature.getId() + ': ' + feature.get('name');
+  } else {
+    info.innerHTML = '&nbsp;';
+  }
+
+  if (feature !== highlight) {
+    if (highlight) {
+      featureOverlay.removeFeature(highlight);
+    }
+    if (feature) {
+      featureOverlay.addFeature(feature);
+    }
+    highlight = feature;
+  }
+
+};
+
+map.on('click', function(evt) {
+    displayFeatureInfo(evt.pixel);
+    });
+            
+                
+//d3.json(data/culture_drc.geojson[, callback])
+        
+    */
+        
+
+        
+        //show and hide icons
+        /*$('#method_aggregate').show();
+        $('#method_collect').show();
+        $('#method_play').hide();
+        $('#place_world').show();
+        $('#place_drc').show();
+        $('#place_northkivu').hide();
+        $('#place_beniregion').hide();
+        $('#place_benicity').hide();
+        $('#place_quarters').hide();
+        
+        //show and hide icons
+        /*$('#method_aggregate').show();
+        $('#method_collect').hide();
+        $('#method_play').hide();
+        $('#place_world').show();
+        $('#place_drc').show();
+        $('#place_northkivu').hide();
+        $('#place_beniregion').hide();
+        $('#place_benicity').show();
+        $('#place_quarters').show();
+        
+        
+        
+        
+
+
 
 ////////////////////////////////////////////////////
                     //CONFLICT STYLE FUNCTIONS//
 ////////////////////////////////////////////////////
-/*
+
     var selectedFeatures = [];
 
     // Unselect previous selected features
@@ -857,13 +1394,17 @@ $(document).ready(function() {
             });
         });
 
-    });
+
+
+
+////////////////////////////////////////////////////
+                    //DRAW//
+////////////////////////////////////////////////////
+
+
+
+
 */
-
-
-
-
-
 
 
 
