@@ -1,14 +1,3 @@
-var legend;
-
-var beni_c_inLegend = [
-    'Roads',
-    'Public Fountains',
-    'Bridges'
-].join('<br />');
-
-
-
-
 ////////////////////////////////////////////////////
                     //VIEWS//
 ////////////////////////////////////////////////////
@@ -50,7 +39,7 @@ var beni_c = new ol.View({//BENI CITY VIEW
     center: [29.46, 0.50],
     zoom: 13,
     minZoom: 13,
-    maxZoom: 13
+    maxZoom: 16
     });
     
 var beni_q = new ol.View({//BENI CITY VIEW
@@ -95,11 +84,6 @@ var beni_rSource = new ol.source.GeoJSON({//BENI REGION ADMIN SOURCE
     projection: 'EPSG:4326'
     });
 
-var beni_c_quartiersSource = new ol.source.GeoJSON({//BENI QUARTIER BOUNDARIES SOURCE
-    url: 'data/quartiers_test.geojson',
-    projection: 'EPSG:4326'
-    });
-
 var beni_c_roadsSource = new ol.source.GeoJSON({//BENI ROADS SOURCE
     url: 'data/roads_test.geojson',
     projection: 'EPSG:4326'
@@ -111,7 +95,7 @@ var beni_c_roadspSource = new ol.source.GeoJSON({//BENI PRIMARY ROADS SOURCE
     });
 
 var drc_coSource = new ol.source.GeoJSON({//DRC CONFLICT SOURCE
-    url: 'data/conflict.geojson',
+    url: 'data/conflict_drc.geojson',
     projection: 'EPSG:4326'
     });
     
@@ -125,6 +109,10 @@ var beni_c_cuSource = new ol.source.GeoJSON({//BENICITY CULTURE SOURCE
     projection: 'EPSG:4326'
     });
 
+var beni_qSource = new ol.source.GeoJSON({//BENI QUARTIER BOUNDARIES SOURCE
+    url: 'data/quartiers_test.geojson',
+    projection: 'EPSG:4326'
+    });
 
 
 ////////////////////////////////////////////////////
@@ -163,7 +151,7 @@ var drc_coStyle = new ol.style.Style({
     image: new ol.style.Circle({
         radius: 4,
         fill: new ol.style.Fill({
-            color: '#ff9900',
+            color: '#94ABB7',
             }),
         stroke: new ol.style.Stroke({
             color: 'rgba(20,130,150,0.8)',
@@ -181,11 +169,17 @@ var drc_cuStyle = new ol.style.Style({
     });
 
 //POINT STYLE CULTURE
+
+/*var radius_cu = function randomIntFromInterval(3,30)
+{
+    return Math.floor(Math.random()*(max-min+1)+min);
+}*/
+
 var beni_c_cuStyle = new ol.style.Style({
     image: new ol.style.Circle({
         radius: 4,
         fill: new ol.style.Fill({
-            color: '#ff9900',
+            color: '#F768A1',
             }),
         stroke: new ol.style.Stroke({
             color: 'rgba(20,130,150,0.8)',
@@ -293,6 +287,11 @@ var nkivudivLayer = new ol.layer.Vector({//NORTHKIVU DIVIDED ADMIN LAYER
 
 var beni_rLayer = new ol.layer.Vector({//BENIREGION ADMIN LAYER
     source: beni_rSource,
+    style: outlineStyle
+    });
+    
+var beni_rdivLayer = new ol.layer.Vector({//BENIREGION ADMIN LAYER
+    source: beni_rSource,
     style: greyStyle
     });
 
@@ -300,7 +299,7 @@ var beni_rLayer = new ol.layer.Vector({//BENIREGION ADMIN LAYER
 
 //quartier boundaries layer
 var beni_qLayer = new ol.layer.Vector({
-    source: beni_c_quartiersSource,
+    source: beni_qSource,
     style: quartiertextStyleFunction
     });
 
@@ -628,13 +627,13 @@ var drc_cuLayer = new ol.layer.Vector({
     style: drc_cuStyle
     });
  
-/*       
-// culture benicity layer
+   
+
 var beni_c_cuLayer = new ol.layer.Vector({
     source: beni_c_cuSource,
     style: beni_c_cuStyle
     });
-*/
+
 
 
 ////////////////////////////////////////////////////
@@ -644,30 +643,6 @@ var beni_c_cuLayer = new ol.layer.Vector({
 var worldGroup = new ol.layer.Group({
     layers: [worldLayer, drcLayer]
     });
-
-var drcGroup = new ol.layer.Group({
-    layers: [drcdivLayer, nkivuLayer]
-    });
-
-var nkivuGroup = new ol.layer.Group({
-    layers: [nkivudivLayer, beni_rLayer]
-    });
-
-var beni_rGroup = new ol.layer.Group({
-    layers: [beni_rLayer]
-    });
-
-var beni_cGroup = new ol.layer.Group({
-    layers: [roadsLayer, roadsLayer2]
-    });
-    
-var beni_qGroup = new ol.layer.Group({
-    layers: [roadsLayer, roadsLayer2, beni_qLayer]
-    });
-    
-var beni_c_inGroup = new ol.layer.Group({
-    layers: [beni_c_inLayer]
-    });
     
 var world_coGroup = new ol.layer.Group({
     layers: [world_coLayer, drcLayer]
@@ -675,6 +650,10 @@ var world_coGroup = new ol.layer.Group({
     
 var world_cuGroup = new ol.layer.Group({
     layers: [world_cuLayer, drcLayer]
+    });
+
+var drcGroup = new ol.layer.Group({
+    layers: [drcdivLayer, nkivuLayer]
     });
     
 var drc_coGroup = new ol.layer.Group({
@@ -684,6 +663,42 @@ var drc_coGroup = new ol.layer.Group({
 var drc_cuGroup = new ol.layer.Group({
     layers: [drcdivLayer, drc_cuLayer, nkivuLayer]
     });
+
+var nkivuGroup = new ol.layer.Group({
+    layers: [nkivudivLayer, beni_rLayer]
+    });
+
+var beni_rGroup = new ol.layer.Group({
+    layers: [beni_rdivLayer]
+    });
+
+var beni_cGroup = new ol.layer.Group({
+    layers: [roadsLayer, roadsLayer2]
+    });
+    
+var beni_c_inGroup = new ol.layer.Group({
+    layers: [beni_c_inLayer]
+    });
+    
+var beni_c_cuGroup = new ol.layer.Group({
+    layers: [roadsLayer, roadsLayer2, beni_c_cuLayer]
+    });
+    
+var beni_qGroup = new ol.layer.Group({
+    layers: [roadsLayer, roadsLayer2, beni_qLayer]
+    });
+    
+var beni_q_inGroup = new ol.layer.Group({
+    layers: [beni_c_inLayer, beni_qLayer]
+    });
+    
+var beni_q_cuGroup = new ol.layer.Group({
+    layers: [roadsLayer, roadsLayer2, beni_c_cuLayer, beni_qLayer]
+    });
+    
+
+    
+
 
 ////////////////////////////////////////////////////
                     //FEATURE OVERLAYS//
@@ -756,7 +771,7 @@ var draw_cuPoints = new ol.interaction.Draw({
     });
 
     
-/*
+
 //ZOOM TO EXTENTS
 var zoomExtents = function(feature) {
     return feature;
@@ -777,7 +792,6 @@ var zoomExtents = function(feature) {
     map.setView().calculateExtent(extent, map.getSize());
     };
 
-*/
 
 
 ////////////////////////////////////////////////////
@@ -786,142 +800,14 @@ var zoomExtents = function(feature) {
 
 $(document).ready(function() {
     
-    map.addEventListener('click', function() {
+   map.addEventListener('click', function() {
         var featuresExtent = ol.extent.createEmpty();
         selectInteraction.getFeatures().forEach(function(feature) {
             ol.extent.extend(featuresExtent, feature.getGeometry().getExtent());
         });
         map.getView().fitExtent(featuresExtent, map.getSize());
     });
-
-/*
-    //SHOW ONLY ICONS APPLICABLE TO AGGREGATE METHOD
-        $('#place_world').show();
-        $('#place_drc').show();
-        $('#place_northkivu').show();
-        $('#place_beniregion').show();
-        $('#place_benicity').show();
-        $('#place_quarters').show();
-        $('#layer_in').hide();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').show();
-        $('#layer_ai').hide();
-        $('#layer_cu').show();
-        $('#layer_po').hide();
-
-    //SHOW ONLY ICONS APPLICABLE TO COLLECT METHOD
-        $('#place_world').hide();
-        $('#place_drc').hide();
-        $('#place_northkivu').hide();
-        $('#place_beniregion').hide();
-        $('#place_benicity').show();
-        $('#place_quarters').show();
-        $('#layer_in').show();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').hide();
-        $('#layer_ai').hide();
-        $('#layer_cu').show();
-        $('#layer_po').hide();
-
-    //SHOW ONLY ICONS APPLICABLE TO PLAY METHOD
-        $('#place_world').hide();
-        $('#place_drc').hide();
-        $('#place_northkivu').show();
-        $('#place_beniregion').show();
-        $('#place_benicity').hide();
-        $('#place_quarters').hide();
-        $('#layer_in').hide();
-        $('#layer_fo').show();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').hide();
-        $('#layer_ai').hide();
-        $('#layer_cu').hide();
-        $('#layer_po').hide();
-
-        //show and hide icons
-        $('#method_aggregate').show();
-        $('#method_collect').hide();
-        $('#method_play').hide();
-        $('#layer_in').hide();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').show();
-        $('#layer_ai').hide();
-        $('#layer_cu').show();
-        $('#layer_po').hide();
-        
-        //show and hide icons
-        $('#method_aggregate').show();
-        $('#method_collect').hide();
-        $('#method_play').hide();
-        $('#layer_in').hide();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').show();
-        $('#layer_ai').hide();
-        $('#layer_cu').show();
-        $('#layer_po').hide();
-        
-        //show and hide icons
-        $('#method_aggregate').show();
-        $('#method_collect').hide();
-        $('#method_play').show();
-        $('#layer_in').hide();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').hide();
-        $('#layer_ai').hide();
-        $('#layer_cu').hide();
-        $('#layer_po').hide();
-        
-        //show and hide icons
-        $('#method_aggregate').show();
-        $('#method_collect').hide();
-        $('#method_play').show();
-        $('#layer_in').hide();
-        $('#layer_fo').show();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').hide();
-        $('#layer_ai').hide();
-        $('#layer_cu').hide();
-        $('#layer_po').hide();
-        
-        //show and hide icons
-        $('#method_aggregate').show();
-        $('#method_collect').show();
-        $('#method_play').hide();
-        $('#layer_in').show();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').hide();
-        $('#layer_ai').hide();
-        $('#layer_cu').show();
-        $('#layer_po').hide();
-        
-        //show and hide icons
-        $('#method_aggregate').show();
-        $('#method_collect').show();
-        $('#method_play').hide();
-        $('#layer_in').show();
-        $('#layer_fo').hide();
-        $('#layer_ag').hide();
-        $('#layer_mi').hide();
-        $('#layer_co').hide();
-        $('#layer_ai').hide();
-        $('#layer_cu').show();
-        $('#layer_po').hide();
-        */
-
+    
     //DESCRIPTION OF AGGREGATE METHOD ON HOVER
     $('#method_aggregate').hover(function () {
         var description = "Look at maps from different sources"
@@ -1096,8 +982,7 @@ $(document).ready(function() {
 ////////////////////////////////////////////////////
                     //GEOLOCATION//
 //////////////////////////////////////////////////// 
-  
-
+/*
 // Geolocation marker
     var markerEl = document.getElementById('geolocation_marker');
     var marker = new ol.Overlay({
@@ -1110,11 +995,10 @@ $(document).ready(function() {
 // LineString to store the different geolocation positions. This LineString
 // is time aware.
 // The Z dimension is actually used to store the rotation (heading).
-    var positions = new ol.geom.LineString([],
-        /** @type {ol.geom.GeometryLayout} */ ('XYZM'));
+    var positions = new ol.geom.LineString([],('XYZM'));
 
 // Geolocation Control
-    var geolocation = new ol.Geolocation(/** @type {olx.GeolocationOptions} */ ({
+    var geolocation = new ol.Geolocation(({
         projection: beni_c.getProjection(),
         trackingOptions: {
             maximumAge: 10000,
@@ -1251,40 +1135,14 @@ function disableButtons() {
   geolocateBtn.disabled = 'disabled';
   simulateBtn.disabled = 'disabled';
 }
-  
-  
+*/
+
   
 ////////////////////////////////////////////////////
                     //LEGENDS//
 ////////////////////////////////////////////////////  
 
-  
-  
-    $('#menu').on('click', function () {
-        if (menu !== 'on') {
-            $('#legend').show();
-            menu = 'on'
-        } else {
-            $('#legend').hide();
-            }
-        });
 
-    var noneLegend;  
-
-    var beni_cLegend = [
-        'Health Facilities',
-        'Schools',
-        'Commerce',
-        'Industry'
-    ].join('<br />');
-    
-    var beni_c_inLegend = [
-        'Roads',
-        'Public Fountains',
-        'Bridges'
-    ].join('<br />');
-    
-    document.getElementById('legend').innerHTML = beni_cLegend; 
   
     });
     
@@ -1334,33 +1192,9 @@ map.on('click', function(evt) {
                 
 //d3.json(data/culture_drc.geojson[, callback])
         
-    */
         
 
-        
-        //show and hide icons
-        /*$('#method_aggregate').show();
-        $('#method_collect').show();
-        $('#method_play').hide();
-        $('#place_world').show();
-        $('#place_drc').show();
-        $('#place_northkivu').hide();
-        $('#place_beniregion').hide();
-        $('#place_benicity').hide();
-        $('#place_quarters').hide();
-        
-        //show and hide icons
-        /*$('#method_aggregate').show();
-        $('#method_collect').hide();
-        $('#method_play').hide();
-        $('#place_world').show();
-        $('#place_drc').show();
-        $('#place_northkivu').hide();
-        $('#place_beniregion').hide();
-        $('#place_benicity').show();
-        $('#place_quarters').show();
-        
-        
+
         
         
 

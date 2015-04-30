@@ -11,74 +11,99 @@ body {
     color: #666;
     }
 
+#header {
+    height: 160px;
+    width: 100%;
+    }
+
+#mapcolumn {
+    width: 700px;
+    float: left;
+    }
+
 #map { 
     height: 500px; 
-    width: 700px; 
-    background:white; 
-    position: absolute; 
+    width: 100%; 
+    background:white;  
     top: 155px; 
     left: 0px; 
     z-index: -1; 
+    float:left;
     }
     
-#legend { 
-    width:120px;
+#buttoncolumn {
+    width: 140px;
     height: auto;
-    position: absolute;
-    margin-left: 60px;
-    top:500px;
+    padding: 50px;
     background-color: white;
-    z-index: 5;
-    padding: 4px;
-    display: none;
+    z-index: 2;
+    float:left;
+    clear:right;
     }
     
-#contribute { 
-    position:absolute;
-    top: 300px;
-    left:900px;
+#infocolumn1 {
+    width: 300px;
+    height: auto;
+    padding-left: 50px;
+    float: left;
+    z-index: -1;
     }
     
-#info { 
-    position:absolute;
-    top: 320px;
-    left:900px;
+#infocolumn2 {
+    width: 300px;
+    height: auto;
+    padding-left: 50px;
+    float: left;
     }
     
-#chart { 
-    position:absolute;
-    top: 700px;
-    left:30px;
+#chart {
+    width: 300px;
+    height: auto;
     }
+    
+
     
 /*------------------------------------*\
 	BUTTONS
 \*------------------------------------*/   
     
-#infocolumn {
-    width: 300px;
-    height: auto;
-    background-color: white;
-    top: 200px;
-    left: 700px;
+/*negative margin around layer buttons to bring closer together*/
+input.layer_button {
+    margin-right: -4px;
+    margin-top: -4px;
+    bottom: -10px;
     }
     
-.method_group {
-    left: 10px
+div.method_group {
+    padding-left: 10px;
+    }
+
+div.place_group {
+    padding-left: 10px;
     }
     
-.place_group {
-    left: 10px
+div.layer_group {
+    padding-left: 10px;
     }
     
-.layer_group {
-    left:10px
+div.namebutton {
+    height: 30px;
     }
     
-.button {
-    float:left;
+#legend {
+    padding-left: 15px;
+    }
+
+#legendicons {
+    width: 30px;
+    float: left;
     }
     
+.icon {
+    width:30px;
+    height:15px;
+    margin-bottom: 5px;
+    }
     
     
     
@@ -88,8 +113,8 @@ body {
             
 img.northarrow { 
     position:absolute;
-    top:600px;
-    left:30px;
+    top:620px;
+    left:38px;
     z-index:2;
     }
            
@@ -138,6 +163,23 @@ img.northarrow {
     border-radius:0 0 4px 4px
     }
     
+/*------------------------------------*\
+	TEXT
+\*------------------------------------*/  
+
+p.buttons { 
+    font-family: "Myriad Pro";
+    font-size: 110%;
+    font-weight: bold;
+    color: black;
+    z-index: 1; 
+    }
+
+p.legend {
+    padding-left: 35px;
+    padding-bottom: 10px;
+    line-height: 170%;
+    }
 
 p.copyright {
     position:absolute;
@@ -379,11 +421,6 @@ body h6 {
 
 }
 
-body p#focus {
-    font-size:1.5em;
-    line-height:1.2em;
-    color:#000000;
-}
 
 
 }

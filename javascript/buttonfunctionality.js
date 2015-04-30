@@ -20,110 +20,117 @@ $(document).ready(function() {
             case "method_aggregate":
                 document.getElementById("method_aggregate").src = "images/method_aggregate_on.svg"; //turns aggregate button on
                 method = 'aggregate' //sets aggregate as method
+                aggregateFunction();
                 if (scale == 'world') {
-                    map.setView(world);
+                    worldFunction();
                     if (layer == 'layer_co') {
-                        map.setLayerGroup(world_coGroup);
+                        world_coFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(world_cuGroup);
+                        world_cuFunction();
                     } else {
-                        map.setLayerGroup(worldGroup);
+                        world_noneFunction();
                     }
                 } else if (scale == 'drc') {
-                    map.setView(drc);
+                    drcFunction();
                     if (layer == 'layer_co') {
-                        map.setLayerGroup(drc_coGroup);
+                        drc_coFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(drc_cuGroup);
+                        drc_cuFunction();
                     } else {
-                        map.setLayerGroup(drcGroup);
+                        drc_noneFunction();
                     }
                 } else if (scale == 'nkivu') {
-                    map.setView(nkivu);
-                    map.setLayerGroup(nkivuGroup);
+                    nkivuFunction();
+                    nkivu_noneFunction();
                 } else if (scale == 'beni_r') {
-                    map.setView(beni_r);
-                    map.setLayerGroup(beni_rGroup);
+                    beni_rFunction();
+                    beni_r_noneFunction();
                 } else if (scale == 'beni_c') {
-                    map.setView(beni_c);
+                    beni_cFunction();
                     if (layer == 'layer_in') {
-                        map.setLayerGroup(beni_c_inGroup);
+                        beni_c_inFunction();
+                    } else if (layer == 'layer_cu') {
+                        beni_c_cuFunction();
                     } else {
-                        map.setLayerGroup(beni_cGroup);
+                        beni_c_noneFunction();
                     }
                 } else if (scale == 'beni_q') {
-                    map.setView(beni_q);
+                    beni_qFunction();
                     if (layer == 'layer_in') {
-                        map.setLayerGroup(beni_c_inGroup);
+                        beni_q_inFunction();
+                    } else if (layer == 'layer_cu') {
+                        beni_q_cuFunction();
                     } else {
-                    map.setLayerGroup(beni_qGroup);
+                    beni_q_noneFunction();
                     }
                 }
                 break;
             case "method_collect":
                 document.getElementById("method_collect").src = "images/method_collect_on.svg";
                 method = 'collect'
+                collectFunction();
                 if (scale == 'world') {
-                    map.setView(world);
-                    map.setLayerGroup(worldGroup);
+                    worldFunction();
+                    world_noneFunction();
                 } else if (scale == 'drc') {
-                    map.setView(drc);
-                    map.setLayerGroup(drcGroup);
+                    drcFunction();
+                    drc_noneFunction();
                 } else if (scale == 'nkivu') {
-                    map.setView(nkivu);
-                    map.setLayerGroup(nkivuGroup);
+                    nkivuFunction();
+                    nkivu_noneFunction();
                 } else if (scale == 'beni_r') {
-                    map.setView(beni_r);
-                    map.setLayerGroup(beni_rGroup);
+                    beni_rFunction();
+                    beni_r_noneFunction();
                 } else if (scale == 'beni_c') {
-                    map.setView(beni_c);
+                    beni_cFunction();
                     if (layer == 'layer_in') {
-                        map.setLayerGroup(beni_c_inGroup);
+                        beni_c_inFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(beni_c_cuGroup);
+                        beni_c_cuFunction();
                     } else {
-                        map.setLayerGroup(beni_cGroup);
+                        beni_c_noneFunction();
                     }
                 } else if (scale == 'beni_q') {
-                    map.setView(beni_q);
+                    beni_qFunction();
                     if (layer == 'layer_in') {
-                        map.setLayerGroup(beni_c_inGroup);
+                        beni_q_inFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(beni_c_cuGroup);
+                        beni_q_cuFunction();
                     } else {
-                        map.setLayerGroup(beni_qGroup);
+                        beni_q_noneFunction();
                     }
                 }
                 break;
             case "method_play":
                 document.getElementById("method_play").src = "images/method_play_on.svg";
                 method = 'play'
+                playFunction();
                 if (scale == 'world') {
-                    map.setView(world);
-                    map.setLayerGroup(worldGroup);
+                    worldFunction();
+                    world_noneFunction();
                 } else if (scale == 'drc') {
-                    map.setView(drc);
-                    map.setLayerGroup(drcGroup);
+                    drcFunction();
+                    drc_noneFunction();
                 } else if (scale == 'nkivu') {
-                    map.setView(nkivu);
+                    nkivuFunction();
                     if (layer == 'layer_fo') {
-                        map.setLayerGroup(nkivu_foGroup);
+                        nkivu_foFunction();
                     } else {
-                        map.setLayerGroup(drcGroup);
+                        nkivu_noneFunction();
                     }
                 } else if (scale == 'beni_r') {
-                    map.setView(beni_r);
+                    beni_rFunction();
                     if (layer == 'layer_fo') {
-                        map.setLayerGroup(beni_r_foGroup);
+                        beni_r_foFunction();
                     } else {
-                        map.setLayerGroup(beni_rGroup);
+                        beni_r_noneFunction();
                     }
                 } else if (scale == 'beni_c') {
-                    map.setView(beni_c);
-                    map.setLayerGroup(beni_cGroup);
+                    beni_cFunction();
+                    beni_c_noneFunction();
                 } else if (scale == 'beni_q') {
-                    map.setView(beni_c);
-                    map.setLayerGroup(beni_qGroup);
+                    beni_qFunction();
+                    beni_q_noneFunction();
                 }
                 break;
             default:
@@ -144,95 +151,119 @@ $(document).ready(function() {
             case "place_world":
                 document.getElementById("place_world").src = "images/place_world_on.svg";
                 scale = 'world';
-                map.setView(world);
+                worldFunction();
                 if (method == 'aggregate') {
+                    aggregateFunction();
                     if (layer == 'layer_co') {
-                        map.setLayerGroup(world_coGroup);
+                        world_coFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(world_cuGroup);
+                        world_cuFunction();
                     } else {
-                        map.setLayerGroup(worldGroup);
+                        world_noneFunction();
                     }
                 } else {
-                    map.setLayerGroup(worldGroup);
+                    world_noneFunction();
                 }
                 break;
             case "place_drc":
                 document.getElementById("place_drc").src = "images/place_drc_on.svg";
                 scale = 'drc';
-                map.setView(drc);
+                drcFunction();
                 if (method == 'aggregate') {
+                    aggregateFunction();
                     if (layer == 'layer_co') {
-                        map.setLayerGroup(drc_coGroup);
+                        drc_coFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(drc_cuGroup);
+                        drc_cuFunction();
                     } else {
-                        map.setLayerGroup(drcGroup);
+                        drc_noneFunction();
                     }
                 } else {
-                    map.setLayerGroup(drcGroup);
+                    drc_noneFunction();
                 }
                 break;
             case "place_nkivu":
                 document.getElementById("place_nkivu").src = "images/place_nkivu_on.svg";
                 scale = 'nkivu';
-                map.setView(nkivu);
+                nkivuFunction();
                 if (method == 'play') {
+                    playFunction();
                     if (layer == 'layer_fo') {
-                        map.setLayerGroup(nkivu_foGroup);
+                        nkivu_foFunction();
                     } else {
-                        map.setLayerGroup(nkivuGroup);
+                        nkivu_noneFunction();
                     }
                 } else {
-                    map.setLayerGroup(nkivuGroup);
+                    nkivu_noneFunction();
                 }
                 break;
             case "place_beni_r":
                 document.getElementById("place_beni_r").src = "images/place_beni_r_on.svg";
                 scale = 'beni_r';
-                map.setView(beni_r);
+                beni_rFunction();
                 if (method == 'play') {
+                    playFunction();
                     if (layer == 'layer_fo') {
-                        map.setLayerGroup(beni_r_foGroup);
+                        beni_r_foFunction();
                     } else {
-                        map.setLayerGroup(beni_rGroup);
+                        beni_r_noneFunction();
                     }
                 } else {
-                    map.setLayerGroup(beni_rGroup);
+                    beni_r_noneFunction();
                 }
                 break;
             case "place_beni_c":
                 document.getElementById("place_beni_c").src = "images/place_beni_c_on.svg";
                 scale = 'beni_c';
-                map.setView(beni_c);
+                beni_cFunction();
                 map.addInteraction(selectInteraction);
-                if (method == 'collect') {
+                if (method == 'aggregate') {
+                    aggregateFunction();
                     if (layer == 'layer_in') {
-                        map.setLayerGroup(beni_c_inGroup);
+                        beni_c_inFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(beni_c_cuGroup);
+                        beni_c_cuFunction();
                     } else {
-                        map.setLayerGroup(beni_cGroup);
+                        beni_c_noneFunction();
+                    }
+                } else if (method == 'collect') {
+                    collectFunction();
+                    if (layer == 'layer_in') {
+                        beni_c_inFunction();
+                    } else if (layer == 'layer_cu') {
+                        beni_c_cuFunction();
+                    } else {
+                        beni_c_noneFunction();
                     }
                 } else {
-                    map.setLayerGroup(beni_cGroup);
+                    beni_c_noneFunction();
                 }
                 break;
             case "place_beni_q":
                 document.getElementById("place_beni_q").src = "images/place_beni_q_on.svg";
                 scale = 'beni_q';
-                map.setView(beni_q);
+                beni_qFunction();
                 map.addInteraction(selectInteraction);
-                if (method == 'collect') {
+                if (method == 'aggregate') {
+                    aggregateFunction();
                     if (layer == 'layer_in') {
-                        map.setLayerGroup(beni_c_inGroup);
+                        beni_q_inFunction();
                     } else if (layer == 'layer_cu') {
-                        map.setLayerGroup(beni_c_cuGroup);
+                        beni_q_cuFunction();
                     } else {
-                        map.setLayerGroup(beni_qGroup);
+                        beni_q_noneFunction();
+                    }
+                } else if (method == 'collect') {
+                    collectFunction();
+                    if (layer == 'layer_in') {
+                        beni_q_inFunction();
+                    } else if (layer == 'layer_cu') {
+                        beni_q_cuFunction();
+                    } else {
+                        beni_q_noneFunction();
                     }
                 } else {
-                    map.setLayerGroup(beni_qGroup);
+                    beni_q_noneFunction();
                 }
                 break;
             default:
@@ -253,19 +284,44 @@ $(document).ready(function() {
                     document.getElementById("layer_in").src = "images/layer_in_on.png";
                     layer = 'layer_in';
                     if (method == 'aggregate') {
+                        aggregateFunction();
                         if (scale == 'beni_c') {
-                            map.setLayerGroup(beni_c_inGroup);
-                            document.getElementById('legend').innerHTML = beni_c_inLegend; 
+                            beni_cFunction();
+                            beni_c_inFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_inFunction();
+                        }
+                    } else if (method == 'collect') {
+                        collectFunction();
+                        if (scale == 'beni_c') {
+                            beni_cFunction();
+                            beni_c_inFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_inFunction();
                         }
                     }
                 } else if (layer == 'layer_in') {
                     document.getElementById("layer_in").src = "images/layer_in_off.png";
                     layer = 'none';
                     if (method == 'aggregate') {
+                        aggregateFunction();
                         if (scale == 'beni_c') {
-                            map.setLayerGroup(beni_cGroup);
-                            document.getElementById('legend').innerHTML = noneLegend; 
-
+                            beni_cFunction();
+                            beni_c_noneFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_noneFunction();
+                        }
+                    } else if (method == 'collect') {
+                        collectFunction();
+                        if (scale == 'beni_c') {
+                            beni_cFunction();
+                            beni_c_noneFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_noneFunction();
                         }
                     }
                 }
@@ -275,20 +331,26 @@ $(document).ready(function() {
                     document.getElementById("layer_fo").src = "images/layer_fo_on.png";
                     layer = 'layer_fo';
                     if (method == 'play') {
+                        playFunction();
                         if (scale == 'nkivu') {
-                            map.setLayerGroup(nkivu_foGroup);
+                            nkivuFunction();
+                            nkivu_foFunction();
                         } else if (scale == 'beni_r') {
-                            map.setLayerGroup(beni_r_foGroup);
+                            beni_rFunction();
+                            beni_r_foFunction();
                         }
                     }
                 } else if (layer == 'layer_fo') {
                     document.getElementById("layer_fo").src = "images/layer_fo_off.png";
                     layer = 'none';
                     if (method == 'play') {
+                        playFunction();
                         if (scale == 'nkivu') {
-                            map.setLayerGroup(nkivuGroup);
+                            nkivuFunction();
+                            nkivu_noneFunction();
                         } else if (scale == 'beni_r') {
-                            map.setLayerGroup(beni_rGroup);
+                            beni_rFunction();
+                            beni_r_noneFunction();
                         }
                     }
                 }
@@ -298,20 +360,26 @@ $(document).ready(function() {
                     document.getElementById("layer_co").src = "images/layer_co_on.png";
                     layer = 'layer_co';
                     if (method == 'aggregate') {
+                        aggregateFunction();
                         if (scale == 'world') {
-                            map.setLayerGroup(world_coGroup);
+                            worldFunction();
+                            world_coFunction();
                         } else if (scale == 'drc') {
-                            map.setLayerGroup(drc_coGroup);
+                            drcFunction();
+                            drc_coFunction();
                         }
                     }
                 } else if (layer == 'layer_co') {
                     document.getElementById("layer_co").src = "images/layer_co_off.png";
                     layer = 'none';
                     if (method == 'aggregate') {
+                        aggregateFunction();
                         if (scale == 'world') {
-                            map.setLayerGroup(worldGroup);
+                            worldFunction();
+                            world_noneFunction();
                         } else if (scale == 'drc') {
-                            map.setLayerGroup(drcGroup);
+                            drcFunction();
+                            drc_noneFunction();
                         }
                     }
                 }
@@ -321,28 +389,56 @@ $(document).ready(function() {
                     document.getElementById("layer_cu").src = "images/layer_cu_on.png"; //turn button on
                     layer = 'layer_cu'; //change layer variable to culture
                     if (method == 'aggregate') {
+                        aggregateFunction();
                         if (scale == 'world') {
-                            map.setLayerGroup(world_cuGroup);
+                            worldFunction();
+                            world_cuFunction();
                         } else if (scale == 'drc') {
-                            map.setLayerGroup(drc_cuGroup);
+                            drcFunction();
+                            drc_cuFunction();
+                        } else if (scale == 'beni_c') {
+                            beni_cFunction();
+                            beni_c_cuFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_cuFunction();
                         }
                     } else if (method == 'collect') {
-                        if (scale == 'world') {
-                            map.setLayerGroup(world_cuGroup);
+                        collectFunction();
+                        if (scale == 'beni_c') {
+                            beni_cFunction();
+                            beni_c_cuFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_cuFunction();
                         }
                     }
                 } else if (layer == 'layer_cu') { //allows layer to toggle off if has already been clicked
                     document.getElementById("layer_cu").src = "images/layer_cu_off.png"; //turn button off
                     layer = 'none'; //change layer variable to none
                     if (method == 'aggregate') {
+                        aggregateFunction();
                         if (scale == 'world') {
-                            map.setLayerGroup(worldGroup);
+                            worldFunction();
+                            world_noneFunction();
                         } else if (scale == 'drc') {
-                            map.setLayerGroup(drcGroup);
+                            drcFunction();
+                            drc_noneFunction();
+                        } else if (scale == 'beni_c') {
+                            beni_cFunction();
+                            beni_c_noneFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_noneFunction();
                         }
                     } else if (method == 'collect') {
-                        if (scale == 'world') {
-                            map.setLayerGroup(worldGroup);
+                        collectFunction();
+                        if (scale == 'beni_c') {
+                            beni_cFunction();
+                            beni_c_noneFunction();
+                        } else if (scale == 'beni_q') {
+                            beni_qFunction();
+                            beni_q_noneFunction();
                         }
                     }
                 }
@@ -350,17 +446,23 @@ $(document).ready(function() {
             default:
                 layer = 'none'
                     if (scale == 'world') {
-                        map.setLayerGroup(worldGroup);
+                        worldFunction();
+                        world_noneFunction();
                     } else if (scale == 'drc') {
-                        map.setLayerGroup(drcGroup);
+                        drcFunction();
+                        drc_noneFunction();
                     } else if (scale == 'nkivu') {
-                        map.setLayerGroup(nkivuGroup);
+                        nkivuFunction();
+                        nkivu_noneFunction();
                     } else if (scale == 'beni_r') {
-                        map.setLayerGroup(beni_rGroup);
+                        beni_rFunction();
+                        beni_r_noneFunction();
                     } else if (scale == 'beni_c') {
-                        map.setLayerGroup(beni_cGroup);
+                        beni_cFunction();
+                        beni_c_noneFunction();
                     } else if (scale == 'beni_q') {
-                        map.setLayerGroup(beni_qGroup);
+                        beni_qFunction();
+                        beni_q_noneFunction();
                     }
                 break;
             }
